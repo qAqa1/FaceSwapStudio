@@ -1,10 +1,12 @@
 import uvicorn
+import core.converter
 # from fastapi import FastAPI
 
 from fastapi import FastAPI, Depends, Request, HTTPException
 from starlette.datastructures import FormData
 
 import core.face_swap_core as face_swap
+from core import converter
 
 app = FastAPI()
 
@@ -49,31 +51,26 @@ async def get_body(request: Request):
 
 # http://127.0.0.1:8000/get_image
 # http://127.0.0.1:8000/get_image?image=Testt
-@app.post("/get_image")
-async def get_image(request: Request):
+@app.post("/copy_image")
+async def copy_image(request: Request):
     msg = await request.json()
-    print('result:')
-    print(type(msg))
-    print(msg)
+    # print('result:')
+    # print(type(msg))
+    # print(msg)
 
-    received_image = imageio.v2.imread(io.BytesIO(base64.b64decode(msg['image'])))
-    cv2_img = cv2.cvtColor(received_image, cv2.COLOR_RGB2BGR)
-    cv2.imwrite("test.png", cv2_img)
+    received_image = converter.base64_to_cvimage(msg['image'])
+    # cv2.imwrite("test.png", received_image)
 
-    # # received_image = imageio.v2.imread(io.BytesIO(base64.b64decode(image)))
-    # # cv2_img = cv2.cvtColor(received_image, cv2.COLOR_RGB2BGR)
-    # # cv2.imwrite("test.png", cv2_img)
-    # items = body.getlist('items')
-    # files = body.getlist('files')  # returns a list of UploadFile objects
-    # if files:
-    #     for file in files:
-    #         print(f'Filename: {file.filename}. Content (first 15 bytes): {await file.read(15)}')
-    return 'OK'
-    # # received_image = imageio.v2.imread(io.BytesIO(base64.b64decode(image)))
-    # # cv2_img = cv2.cvtColor(received_image, cv2.COLOR_RGB2BGR)
-    # # cv2.imwrite("test.png", cv2_img)
-    # print(image)
-    # return {'image received'}
+    # received_image[:] = (255, 0, 0)
+
+    base64_result_image = converter.cvimage_to_base64(received_image)
+    print(base64_result_image)
+
+    result = {
+        "image": base64_result_image
+    }
+
+    return result
 
 
 if __name__ == "__main__":
