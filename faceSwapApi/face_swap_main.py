@@ -26,10 +26,10 @@ cv_face4 = cv2.imread("test_images/face/face4.jpg")
 
 # result = face_swap.swap_face(cv_bodies, detected_faces[0], target_faces[0])
 
-result = face_swap.swap_face_by_images(cv_bodies, cv_face1, 0)
-result = face_swap.swap_face_by_images(result, cv_face2, 1)
-result = face_swap.swap_face_by_images(result, cv_face3, 2)
-result = face_swap.swap_face_by_images(result, cv_face4, 3)
+_, result = face_swap.swap_face_by_images(cv_bodies, cv_face1, 0)
+_, result = face_swap.swap_face_by_images(result, cv_face2, 1)
+_, result = face_swap.swap_face_by_images(result, cv_face3, 2)
+_, result = face_swap.swap_face_by_images(result, cv_face4, 3)
 
 result = utility.draw_rectangles_with_text(result, detected_faces_rectangles, 'result face')
 

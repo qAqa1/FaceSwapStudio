@@ -21,7 +21,7 @@ def draw_rectangle_with_text(cv_image, np_array_rectangle, cv_rectangle_color, l
     # Prints the text.
     image = cv2.rectangle(image, (x1, y1 - 20), (x1 + w, y1), cv_rectangle_color, -1)
     image = cv2.putText(image, label, (x1, y1 - 5),
-                      cv2.FONT_HERSHEY_SIMPLEX, 0.6, cv_label_color, 1)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, cv_label_color, 1)
     return image
 
 
@@ -32,6 +32,5 @@ def draw_rectangles_with_text(cv_image, np_array_rectangles, label):
         rectangle_color = colors[index % len(colors)]
         label_color = (0, 0, 0)
         image = draw_rectangle_with_text(image, rectangle, rectangle_color, 'face ' + str(index),
-                                            label_color)
+                                         label_color)
     return image
-
