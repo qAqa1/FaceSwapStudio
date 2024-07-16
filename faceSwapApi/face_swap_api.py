@@ -98,17 +98,17 @@ async def detect_face(request: Request):
 
     result_dict = {
         'status': status.name,
-        'detected_faces_rectangles': []
+        'detectedFacesRectangles': []
         # 'detected_faces_rectangles': detected_faces_rectangles
     }
 
-    [result_dict['detected_faces_rectangles'].append(rectangle.pack_to_dict()) for rectangle in detected_faces_rectangles]
+    [result_dict['detectedFacesRectangles'].append(rectangle.pack_to_dict()) for rectangle in detected_faces_rectangles]
 
     return result_dict
 
 
 def swap_face_handler(json_dict):
-    required_data = {'body', 'face', 'target_face_index'}
+    required_data = {'body', 'face', 'targetFaceIndex'}
 
     for val in required_data:
         if json_dict[val] == '':
@@ -124,7 +124,7 @@ def swap_face_handler(json_dict):
         return face_swap.FaceProcessingStatus.BAD_IMAGE_ERROR, None
 
     try:
-        target_face_index = int(json_dict['target_face_index'])
+        target_face_index = int(json_dict['targetFaceIndex'])
     except ValueError:
         return face_swap.FaceProcessingStatus.TARGET_IMAGE_FACE_INDEX_NAN_ERROR, None
 
