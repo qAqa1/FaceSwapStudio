@@ -8,19 +8,30 @@ public class SwapFaceApiClient
     
     public string ApiUrl { get; private set; }
     
-    private const string DetectFaceUrl = "detect_face";
-    private const string SwapFaceUrl = "swap_face";
+    private const string DetectFaceApiName = "detect_faces";
+    private const string SwapFaceApiName = "swap_face";
     
-    private string DetectFaceApiUrl => ApiUrl + "/" + DetectFaceUrl;
-    private string SwapFaceApiUrl => ApiUrl + "/" + SwapFaceUrl;
+    private string DetectFaceApiUrl => ApiUrl + "/" + DetectFaceApiName;
+    private string SwapFaceApiUrl => ApiUrl + "/" + SwapFaceApiName;
     
     private HttpClient _httpClient = new();
 
-    public async Task<DetectFaceResult?> DetectFaces(DetectFaceRequest request)
+    public async Task<DetectFacesResult?> DetectFaces(DetectFacesRequest request)
     {
-        var imageRecord = new DetectFaceRequest(request.Image);
-        using var response = await _httpClient.PostAsJsonAsync(DetectFaceApiUrl, imageRecord);
-        var jsonResponse = await response.Content.ReadFromJsonAsync<DetectFaceResult>();
-        return jsonResponse;
+        using var response = await _httpClient.PostAsJsonAsync(DetectFaceApiUrl, request);
+        // var jsonResponse = await response.Content.ReadFromJsonAsync<DetectFaceResult>();
+        // return jsonResponse;
+        
+        return await response.Content.ReadFromJsonAsync<DetectFacesResult>();
+    }
+    
+    public async Task<SwapFaceResult?> SwapFace(SwapFaceRequest request)
+    {
+        using var response = await _httpClient.PostAsJsonAsync(SwapFaceApiUrl, request);
+        
+        // var jsonResponse = await response.Content.ReadAsStringAsync();
+        // Console.WriteLine($"{jsonResponse}\n");
+        
+        return await response.Content.ReadFromJsonAsync<SwapFaceResult>();
     }
 }

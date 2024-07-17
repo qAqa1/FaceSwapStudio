@@ -1,6 +1,6 @@
 import insightface
 from insightface.app import FaceAnalysis
-from enum import Enum
+from enum import IntEnum
 
 
 print("Load models:")
@@ -13,10 +13,10 @@ swapper = insightface.model_zoo.get_model('core/inswapper_128.onnx',
                                           download_zip=False)
 
 
-class FaceProcessingStatus(Enum):
+class FaceProcessingStatus(IntEnum):
     UNKNOWN = 0
-    UNEXPECTED_ERROR = 1
-    SUCCESS = 2
+    SUCCESS = 1
+    UNEXPECTED_ERROR = 2
     SOURCE_IMAGE_NO_FACE_ERROR = 3
     TARGET_IMAGE_NO_FACE_ERROR = 4
     IMAGE_NO_FACE_ERROR = 5

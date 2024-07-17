@@ -41,6 +41,50 @@ namespace FaceSwapApiCaller
 {
     static class Program
     {
+        static async Task DetectFaces()
+        {
+            var base64Image =
+                Convert.ToBase64String(File.ReadAllBytes("../../../../../faceSwapApi/test_images/body/body1.png"));
+            
+            var faceSwapApiClient = new FaceProcessingApi.SwapFaceApi.SwapFaceApiClient("http://127.0.0.1:8000");
+            var request = new FaceProcessingApi.SwapFaceApi.DetectFacesRequest(base64Image);
+            var result = await faceSwapApiClient.DetectFaces(request);
+
+            if (result != null)
+            {
+                if (result.Status != null)
+                    Console.WriteLine(result.Status);
+
+                if (result.DetectedFacesRectangles != null)
+                    Console.WriteLine(result.DetectedFacesRectangles.Count);
+            }
+        }
+        
+        static async Task SwapFace()
+        {
+            var base64BodyImage =
+                Convert.ToBase64String(File.ReadAllBytes("../../../../../faceSwapApi/test_images/body/body1.png"));
+            
+            var base64FaceImage =
+                Convert.ToBase64String(File.ReadAllBytes("../../../../../faceSwapApi/test_images/face/face1.jpg"));
+
+            var targetFaceIndex = 0;
+            
+            var faceSwapApiClient = new FaceProcessingApi.SwapFaceApi.SwapFaceApiClient("http://127.0.0.1:8000");
+            var request = new FaceProcessingApi.SwapFaceApi.SwapFaceRequest(base64BodyImage, base64FaceImage, targetFaceIndex);
+            // var request = new FaceProcessingApi.SwapFaceApi.SwapFaceRequest(base64BodyImage, "ddssfafsfsfsffssfwrwreretwtewrtd", targetFaceIndex);
+            var result = await faceSwapApiClient.SwapFace(request);
+
+            if (result != null)
+            {
+                if (result.Status != null)
+                    Console.WriteLine(result.Status);
+
+                // if (result.Image != null)
+                //     Console.WriteLine(result.Image);
+            }
+        }
+        
         static async Task Main(string[] args)
         {
             // // using HttpClient client = new();
@@ -93,22 +137,8 @@ namespace FaceSwapApiCaller
             // Console.WriteLine(jsonResponse.Status);
             // Console.WriteLine(jsonResponse.DetectedFacesRectangles.Count);
 
-            
-            var base64Image =
-                Convert.ToBase64String(File.ReadAllBytes("../../../../../faceSwapApi/test_images/body/body1.png"));
-            
-            var faceSwapApiClient = new FaceProcessingApi.SwapFaceApi.SwapFaceApiClient("http://127.0.0.1:8000");
-            var detectFaceRequest = new FaceProcessingApi.SwapFaceApi.DetectFaceRequest(base64Image);
-            var detectFaceResult = await faceSwapApiClient.DetectFaces(detectFaceRequest);
-
-            if (detectFaceResult != null)
-            {
-                if (detectFaceResult.Status != null)
-                    Console.WriteLine(detectFaceResult.Status);
-
-                if (detectFaceResult.DetectedFacesRectangles != null)
-                    Console.WriteLine(detectFaceResult.DetectedFacesRectangles.Count);
-            }
+            // await DetectFaces();
+            await SwapFace();
         }
     }
 }

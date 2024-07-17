@@ -15,8 +15,8 @@ public enum FaceProcessingStatus
     BadImageError = 10,
 }
 
-public record class DetectFaceRequest(
-    string? Image = null);
+public record class DetectFacesRequest(
+    string Image);
 
 public record class FaceRectangle(
     int X1 = 0,
@@ -24,8 +24,17 @@ public record class FaceRectangle(
     int X2 = 0,
     int Y2 = 0);
 
-public record class DetectFaceResult(
+public record class DetectFacesResult(
     // string? Status = null,
     FaceProcessingStatus? Status = null,
     List<FaceRectangle>? DetectedFacesRectangles = null);
     
+public record class SwapFaceRequest(
+    string body,
+    string face,
+    int targetFaceIndex);
+    
+public record class SwapFaceResult(
+    // string? Status = null,
+    FaceProcessingStatus? Status = null,
+    string? Image = null);

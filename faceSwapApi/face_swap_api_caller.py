@@ -11,7 +11,7 @@ def call_detect_face():
         "image": converter.cvimage_to_base64(image),
     }
 
-    status, detected_faces_rectangles = face_swap_api.detect_face_handler(json_dict)
+    status, detected_faces_rectangles = face_swap_api.detect_faces_handler(json_dict)
 
     print('status =', status)
     print('Detected faces:')

@@ -53,15 +53,15 @@ class FaceRectangle:
     y2 = 0
 
 
-def detect_face_handler(json_dict):
+def detect_faces_handler(json_dict):
     required_data = {'image'}
 
     for val in required_data:
-        if json_dict[val] == '':
-            return face_swap.FaceProcessingStatus.EMPTY_ARG_ERROR, None
+        if val not in json_dict:
+            return face_swap.FaceProcessingStatus.NO_REQUIRED_ARGS_ERROR, None
 
     for val in required_data:
-        if val not in json_dict:
+        if json_dict[val] == '':
             return face_swap.FaceProcessingStatus.EMPTY_ARG_ERROR, None
 
     try:
@@ -84,12 +84,12 @@ def detect_face_handler(json_dict):
     # return face_swap.FaceProcessingStatus.SUCCESS, detected_faces_rectangles
 
 
-# http://127.0.0.1:8000/detect_face
-@app.post("/detect_face")
-async def detect_face(request: Request):
+# http://127.0.0.1:8000/detect_faces
+@app.post("/detect_faces")
+async def detect_faces(request: Request):
     message = await request.json()
 
-    status, detected_faces_rectangles = detect_face_handler(message)
+    status, detected_faces_rectangles = detect_faces_handler(message)
 
     if status != face_swap.FaceProcessingStatus.SUCCESS:
         return {
@@ -111,12 +111,13 @@ def swap_face_handler(json_dict):
     required_data = {'body', 'face', 'targetFaceIndex'}
 
     for val in required_data:
+        if val not in json_dict:
+            return face_swap.FaceProcessingStatus.NO_REQUIRED_ARGS_ERROR, None
+
+    for val in required_data:
         if json_dict[val] == '':
             return face_swap.FaceProcessingStatus.EMPTY_ARG_ERROR, None
 
-    for val in required_data:
-        if val not in json_dict:
-            return face_swap.FaceProcessingStatus.EMPTY_ARG_ERROR, None
     try:
         body_image = converter.base64_to_cvimage(json_dict['body'])
         face_image = converter.base64_to_cvimage(json_dict['face'])
@@ -153,7 +154,6 @@ async def swap_face(request: Request):
     # print(base64_result_image)
 
     print('status =', status)
-
     return {
         "status": status.value,
         "image": base64_result_image
