@@ -93,11 +93,11 @@ async def detect_face(request: Request):
 
     if status != face_swap.FaceProcessingStatus.SUCCESS:
         return {
-            "status": status.name
+            "status": status.value
         }
 
     result_dict = {
-        'status': status.name,
+        'status': status.value,
         'detectedFacesRectangles': []
         # 'detected_faces_rectangles': detected_faces_rectangles
     }
@@ -146,7 +146,7 @@ async def swap_face(request: Request):
 
     if status != face_swap.FaceProcessingStatus.SUCCESS:
         return {
-            "status": status.name
+            "status": status.value
         }
 
     base64_result_image = converter.cvimage_to_base64(image)
@@ -155,7 +155,7 @@ async def swap_face(request: Request):
     print('status =', status)
 
     return {
-        "status": status.name,
+        "status": status.value,
         "image": base64_result_image
     }
 
