@@ -41,17 +41,17 @@ def call_swap_face():
     json_dict = {
         "body": converter.cvimage_to_base64(cv_bodies),
         "face": converter.cvimage_to_base64(cv_face1),
-        "target_face_index": '1',
+        "targetFaceIndex": '1',
     }
 
     status, image = face_swap_api.swap_face_handler(json_dict)
 
-    print('status =', status)
-    print('image =', image)
+    print('Status =', status)
+    print('Image =', image)
 
     # cv2.imshow('Result image', image)
     # cv2.waitKey()
 
 
 call_detect_face()
-# call_swap_face()
+call_swap_face()

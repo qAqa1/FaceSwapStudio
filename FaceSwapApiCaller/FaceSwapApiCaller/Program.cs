@@ -70,11 +70,11 @@ namespace FaceSwapApiCaller
 
             var targetFaceIndex = 0;
             
-            var faceSwapApiClient = new FaceProcessingApi.SwapFaceApi.SwapFaceApiClient("http://127.0.0.1:8000");
+            var client = new FaceProcessingApi.SwapFaceApi.SwapFaceApiClient("http://127.0.0.1:8000");
             var request = new FaceProcessingApi.SwapFaceApi.SwapFaceRequest(base64BodyImage, base64FaceImage, targetFaceIndex);
             // var request = new FaceProcessingApi.SwapFaceApi.SwapFaceRequest(base64BodyImage, "ddssfafsfsfsffssfwrwreretwtewrtd", targetFaceIndex);
             // var request = new FaceProcessingApi.SwapFaceApi.SwapFaceRequest(base64BodyImage, "dd", targetFaceIndex);
-            var result = await faceSwapApiClient.SwapFace(request);
+            var result = await client.SwapFace(request);
 
             if (result != null)
             {
@@ -85,7 +85,23 @@ namespace FaceSwapApiCaller
                 //     Console.WriteLine(result.Image);
             }
         }
-        
+
+        static async Task EnchanceFaces()
+        {
+            var base64Image =
+                Convert.ToBase64String(File.ReadAllBytes("../../../../../faceSwapApi/test_images/face_swap_result.png"));
+            
+            var enchanceSwapApiClient = new FaceProcessingApi.EnchanceFaceApi.EnchanceFaceApiClient("http://127.0.0.1:7860");
+            var request = new FaceProcessingApi.EnchanceFaceApi.EnchanceFacesRequest(1, base64Image);
+            // var request = new FaceProcessingApi.EnchanceFaceApi.EnchanceFacesRequest(1, "sadasfdasf");
+            var result = await enchanceSwapApiClient.EnchanceFaces(request);
+
+            if (result != null)
+            {
+                Console.WriteLine("Image is null: " + (result.Image == null));
+            }
+        }
+
         static async Task Main(string[] args)
         {
             // // using HttpClient client = new();
@@ -139,7 +155,8 @@ namespace FaceSwapApiCaller
             // Console.WriteLine(jsonResponse.DetectedFacesRectangles.Count);
 
             // await DetectFaces();
-            await SwapFace();
+            // await SwapFace();
+            await EnchanceFaces();
         }
     }
 }
