@@ -73,6 +73,7 @@ namespace FaceSwapApiCaller
             var faceSwapApiClient = new FaceProcessingApi.SwapFaceApi.SwapFaceApiClient("http://127.0.0.1:8000");
             var request = new FaceProcessingApi.SwapFaceApi.SwapFaceRequest(base64BodyImage, base64FaceImage, targetFaceIndex);
             // var request = new FaceProcessingApi.SwapFaceApi.SwapFaceRequest(base64BodyImage, "ddssfafsfsfsffssfwrwreretwtewrtd", targetFaceIndex);
+            // var request = new FaceProcessingApi.SwapFaceApi.SwapFaceRequest(base64BodyImage, "dd", targetFaceIndex);
             var result = await faceSwapApiClient.SwapFace(request);
 
             if (result != null)

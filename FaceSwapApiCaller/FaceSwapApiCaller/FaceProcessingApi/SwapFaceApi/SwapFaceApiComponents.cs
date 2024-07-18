@@ -30,9 +30,9 @@ public record class DetectFacesResult(
     List<FaceRectangle>? DetectedFacesRectangles = null);
     
 public record class SwapFaceRequest(
-    string body,
-    string face,
-    int targetFaceIndex);
+    string Body,
+    string Face,
+    int TargetFaceIndex);
     
 public record class SwapFaceResult(
     // string? Status = null,

@@ -18,20 +18,73 @@ public class SwapFaceApiClient
 
     public async Task<DetectFacesResult?> DetectFaces(DetectFacesRequest request)
     {
-        using var response = await _httpClient.PostAsJsonAsync(DetectFaceApiUrl, request);
-        // var jsonResponse = await response.Content.ReadFromJsonAsync<DetectFaceResult>();
-        // return jsonResponse;
+        // using var response = await _httpClient.PostAsJsonAsync(DetectFaceApiUrl, request);
+        // return await response.Content.ReadFromJsonAsync<DetectFacesResult>();
         
-        return await response.Content.ReadFromJsonAsync<DetectFacesResult>();
+        HttpResponseMessage? response = null; 
+        
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync(DetectFaceApiUrl, request);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine("Unexpected exception while sending request:\n" + exception);
+            return null;
+        }
+        
+        try
+        {
+            return await response.Content.ReadFromJsonAsync<DetectFacesResult>();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine("Unexpected exception while reading request:\n" + exception);
+            
+            try
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error data from server:\n{jsonResponse}\n");
+            }
+            catch { }
+            
+            return null;
+        }
     }
     
     public async Task<SwapFaceResult?> SwapFace(SwapFaceRequest request)
     {
-        using var response = await _httpClient.PostAsJsonAsync(SwapFaceApiUrl, request);
+        // using var response = await _httpClient.PostAsJsonAsync(SwapFaceApiUrl, request);
+        // return await response.Content.ReadFromJsonAsync<SwapFaceResult>();
+
+        HttpResponseMessage? response = null; 
         
-        // var jsonResponse = await response.Content.ReadAsStringAsync();
-        // Console.WriteLine($"{jsonResponse}\n");
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync(SwapFaceApiUrl, request);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine("Unexpected exception while sending request:\n" + exception);
+            return null;
+        }
         
-        return await response.Content.ReadFromJsonAsync<SwapFaceResult>();
+        try
+        {
+            return await response.Content.ReadFromJsonAsync<SwapFaceResult>();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine("Unexpected exception while reading request:\n" + exception);
+            
+            try
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error data from server:\n{jsonResponse}\n");
+            }
+            catch { }
+            
+            return null;
+        }
     }
 }
