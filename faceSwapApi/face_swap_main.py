@@ -35,4 +35,5 @@ result = utility.draw_rectangles_with_text(result, detected_faces_rectangles, 'r
 
 cv2.imshow('Detected faces', detected_faces_image)
 cv2.imshow('Swapped faces', result)
+# cv2.imwrite("result.png", result)
 cv2.waitKey()
