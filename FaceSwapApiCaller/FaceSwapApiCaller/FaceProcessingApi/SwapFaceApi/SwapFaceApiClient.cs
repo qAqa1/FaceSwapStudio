@@ -18,6 +18,8 @@ public class SwapFaceApiClient
 
     public async Task<DetectFacesResult?> DetectFaces(DetectFacesRequest request)
     {
+        Console.WriteLine("Call detect faces api by url: " + SwapFaceApiUrl + ":");
+        
         // using var response = await _httpClient.PostAsJsonAsync(DetectFaceApiUrl, request);
         // return await response.Content.ReadFromJsonAsync<DetectFacesResult>();
         
@@ -35,7 +37,25 @@ public class SwapFaceApiClient
         
         try
         {
-            return await response.Content.ReadFromJsonAsync<DetectFacesResult>();
+            // return await response.Content.ReadFromJsonAsync<DetectFacesResult>();
+            
+            var result = await response.Content.ReadFromJsonAsync<DetectFacesResult>();
+
+            if (result != null)
+            {
+                Console.WriteLine("Detect face api result:");
+                
+                if (result.Status != null)
+                    Console.WriteLine("Status: " + result.Status);
+
+                if (result.DetectedFacesRectangles != null)
+                {
+                    Console.WriteLine("Detected faces count: " + result.DetectedFacesRectangles.Count);
+                    result.DetectedFacesRectangles.ForEach(Console.WriteLine);
+                }
+            }
+
+            return result;
         }
         catch (Exception exception)
         {
@@ -54,6 +74,8 @@ public class SwapFaceApiClient
     
     public async Task<SwapFaceResult?> SwapFace(SwapFaceRequest request)
     {
+        Console.WriteLine("Call swap face api by url: " + SwapFaceApiUrl + ":");
+        
         // using var response = await _httpClient.PostAsJsonAsync(SwapFaceApiUrl, request);
         // return await response.Content.ReadFromJsonAsync<SwapFaceResult>();
 
@@ -71,7 +93,21 @@ public class SwapFaceApiClient
         
         try
         {
-            return await response.Content.ReadFromJsonAsync<SwapFaceResult>();
+            // return await response.Content.ReadFromJsonAsync<SwapFaceResult>();
+            
+            var result = await response.Content.ReadFromJsonAsync<SwapFaceResult>();
+
+            if (result != null)
+            {
+                Console.WriteLine("Swap face api result:");
+                
+                if (result.Status != null)
+                    Console.WriteLine("Status: " + result.Status);
+                
+                Console.WriteLine("Image is null: " + (result.Image == null));
+            }
+
+            return result;
         }
         catch (Exception exception)
         {

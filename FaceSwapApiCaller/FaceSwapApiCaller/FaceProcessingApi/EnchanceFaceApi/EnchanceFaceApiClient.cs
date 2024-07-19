@@ -17,6 +17,8 @@ public class EnchanceFaceApiClient
 
     public async Task<EnchanceFacesResult?> EnchanceFaces(EnchanceFacesRequest request)
     {
+        Console.WriteLine("Call enchance faces api by url: " + EnchanceFaceApiUrl + ":");
+        
         // using var response = await _httpClient.PostAsJsonAsync(EnchanceFaceApiUrl, request);
         // return await response.Content.ReadFromJsonAsync<EnchanceFacesResult>();
         
@@ -34,7 +36,17 @@ public class EnchanceFaceApiClient
         
         try
         {
-            return await response.Content.ReadFromJsonAsync<EnchanceFacesResult>();
+            // return await response.Content.ReadFromJsonAsync<EnchanceFacesResult>();
+            
+            var result = await response.Content.ReadFromJsonAsync<EnchanceFacesResult>();
+
+            if (result != null)
+            {
+                Console.WriteLine("Enchance face api result:");
+                Console.WriteLine("Image is null: " + (result.Image == null));
+            }
+
+            return result;
         }
         catch (Exception exception)
         {
