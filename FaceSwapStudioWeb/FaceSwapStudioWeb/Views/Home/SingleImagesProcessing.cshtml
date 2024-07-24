@@ -1,0 +1,149 @@
+@model FaceSwapStudioWeb.Models.FaceSwapModel
+
+<p>Обработка одиночных изображений</p>
+
+@* <h3>Выберите изображения для загрузки</h3> *@
+@* <form asp-action="AddFile" asp-controller="Home" method="post" enctype="multipart/form-data"> *@
+@*     <input type="file" name="uploadedFile" /><br> *@
+@*     <input type="submit" value="Загрузить" /> *@
+@* </form> *@
+
+
+<form asp-action="UploadImagesForSwap" method="post" enctype="multipart/form-data">
+    <br>
+    <p>Тело</p>
+    <input type="file" accept="image/*" name="body"/>
+    <br>
+    <br>
+    <p>Лицо</p>
+    <input type="file" accept="image/*" name="face"/>
+    <br>
+    <br>
+    <input type="submit" value="Загрузить"/>
+</form>
+
+@{
+    if (Model.BodyImage != null && Model.FaceImage != null)
+    {
+        <div>
+            <h4>Тело</h4>
+            <img style='width:500px;' src="data:image/jpeg;base64,@(Model.CstomConvert.FileToBase64(Model.BodyImage))"/>
+        </div>
+    }
+    
+    if (Model.FaceImage != null)
+    {
+        <div>
+            <h4>Лицо</h4>
+            <img style='width:500px;' src="data:image/jpeg;base64,@(Model.CstomConvert.FileToBase64(Model.FaceImage))"/>
+        </div>
+    }
+    
+    if (Model.SwapImage != null)
+    {
+        <div>
+            <h4>Замена лица</h4>
+            <img style='width:500px;' src="data:image/jpeg;base64,@(Model.CstomConvert.FileToBase64(Model.SwapImage))"/>
+        </div>
+    }
+    
+    if (Model.EnchancedSwapImage != null)
+    {
+        <div>
+            <h4>Улучшение лица</h4>
+            <img style='width:500px;' src="data:image/jpeg;base64,@(Model.CstomConvert.FileToBase64(Model.EnchancedSwapImage))"/>
+        </div>
+    }
+}
+
+@* <form
+
+
+ asp-action="AddFile" asp-controller="Home" method="post" enctype="multipart/form-data"> *@
+@*     <input type="file" name="uploads" /><br> *@
+@*     <input type="file" name="uploads" /><br> *@
+@*     <input type="file" name="uploads" /><br> *@
+@*     <input type="submit" value="Загрузить" /> *@
+@* </form> *@
+
+@* $1$ <p>Обработка одиночных изображений</p> #1# *@
+@* *@
+@* @using System.Web; *@
+@* @using System.Web.Helpers; *@
+@* @using Microsoft.AspNetCore.Mvc; *@
+@* @using Microsoft.AspNetCore.Http; *@
+@* *@
+@* @{ *@
+@*     WebImage photo = null; *@
+@*     var newFileName = ""; *@
+@*     var imagePath = ""; *@
+@* *@
+@*     // System.Web.HttpContext.Current; *@
+@*     // *@
+@*     // this.ControllerContext.HttpContext *@
+@*      *@
+@*     photo = WebImage.GetImageFromRequest(); *@
+@*     if (photo != null) *@
+@*     { *@
+@*         newFileName = Guid.NewGuid().ToString() + "_" + *@
+@*                       System.IO.Path.GetFileName(photo.FileName); *@
+@*         imagePath = @"images\" + newFileName; *@
+@* *@
+@*         photo.Save(@"~\" + imagePath); *@
+@*     } *@
+@* } *@
+@* <!DOCTYPE html> *@
+@* <html> *@
+@* <head> *@
+@*     <title>Image Upload</title> *@
+@* </head> *@
+@* <body> *@
+@* <form action="" method="post" enctype="multipart/form-data"> *@
+@*     <fieldset> *@
+@*         <legend> Upload Image </legend> *@
+@*         <label for="Image">Image</label> *@
+@*         <input type="file" name="Image"/> *@
+@*         <br/> *@
+@*         <input type="submit" value="Upload"/> *@
+@*     </fieldset> *@
+@* </form> *@
+@* <h1>Uploaded Image</h1> *@
+@* @if (imagePath != "") *@
+@* { *@
+@*     <div class="result"> *@
+@*         <img src="@imagePath" alt="image"/> *@
+@* *@
+@*     </div> *@
+@* } *@
+@* </body> *@
+@* </html> *@
+
+@* <PageTitle>Counter</PageTitle> *@
+@* *@
+@* <h1>Counter</h1> *@
+@* *@
+@* <p role="status">Current count: @currentCount</p> *@
+@* *@
+@* <button class="btn btn-primary" @onclick="IncrementCount">Click me</button> *@
+@* *@
+@* @code { *@
+@*     private int currentCount = 0; *@
+@* *@
+@*     private void IncrementCount() *@
+@*     { *@
+@*         currentCount++; *@
+@*     } *@
+@* } *@
+
+@* <form enctype="multipart/form-data" method="post"> *@
+@*     <dl> *@
+@*         <dt> *@
+@*             <label asp-for="FileUpload.FormFile"></label> *@
+@*         </dt> *@
+@*         <dd> *@
+@*             <input asp-for="FileUpload.FormFile" type="file"> *@
+@*             <span asp-validation-for="FileUpload.FormFile"></span> *@
+@*         </dd> *@
+@*     </dl> *@
+@*     <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" /> *@
+@* </form> *@
