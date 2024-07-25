@@ -1,149 +1,152 @@
 @model FaceSwapStudioWeb.Models.FaceSwapModel
 
-<p>Обработка одиночных изображений</p>
+@{
+ViewData["Title"] = "Face swap";
+}
+<h1>@ViewData["Title"]</h1>
 
-@* <h3>Выберите изображения для загрузки</h3> *@
-@* <form asp-action="AddFile" asp-controller="Home" method="post" enctype="multipart/form-data"> *@
-@*     <input type="file" name="uploadedFile" /><br> *@
-@*     <input type="submit" value="Загрузить" /> *@
-@* </form> *@
-
+<h1 class="fw-light">Single images processing</h1>
+<p class="text-muted">Input</p>
 
 <form asp-action="UploadImagesForSwap" method="post" enctype="multipart/form-data">
-    <br>
-    <p>Тело</p>
-    <input type="file" accept="image/*" name="body"/>
-    <br>
-    <br>
-    <p>Лицо</p>
-    <input type="file" accept="image/*" name="face"/>
-    <br>
-    <br>
-    <input type="submit" value="Загрузить"/>
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img id="body-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
+
+                        @{
+                            if (Model.BodyImage == null)
+                            {
+                                <img id="body-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
+                            }
+                            else
+                            {
+                                <img id="body-image" class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.BodyImage))"/>
+                            }
+                        }
+                        <div class="card-body">
+                            <p class="card-text">Choose a body. Select an image in which the face is clearly visible.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <input id="body-input" type="file" accept="image/*" name="body"/>
+                                </div>
+                                @* <small class="text-muted">9 mins</small> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card shadow-sm">
+                        @* <img id="face-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/> *@
+
+                        @{
+                            if (Model.FaceImage == null)
+                            {
+                                <img id="face-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
+                            }
+                            else
+                            {
+                                <img id="face-image" class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.FaceImage))"/>
+                            }
+                        }
+                        <div class="card-body">
+                            <p class="card-text">Choose a face. Select an image in which the face is clearly visible.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <input id="face-input" type="file" accept="image/*" name="face"/>
+                                </div>
+                                @* <small class="text-muted">9 mins</small> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" value="Face swap" class="btn btn-primary my-2"/>
 </form>
 
+<script>
+    document.getElementById('body-input').onchange = function (evt) {
+        var tgt = evt.target || window.event.srcElement,
+            files = tgt.files;
+        
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                document.getElementById('body-image').src = fr.result;
+            }
+            fr.readAsDataURL(files[0]);
+        }
+    }
+
+    document.getElementById('face-input').onchange = function (evt) {
+        var tgt = evt.target || window.event.srcElement,
+            files = tgt.files;
+         
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                document.getElementById('face-image').src = fr.result;
+            }
+            fr.readAsDataURL(files[0]);
+        }
+    }
+</script>
+
 @{
-    if (Model.BodyImage != null && Model.FaceImage != null)
-    {
-        <div>
-            <h4>Тело</h4>
-            <img style='width:500px;' src="data:image/jpeg;base64,@(Model.CstomConvert.FileToBase64(Model.BodyImage))"/>
-        </div>
-    }
-    
-    if (Model.FaceImage != null)
-    {
-        <div>
-            <h4>Лицо</h4>
-            <img style='width:500px;' src="data:image/jpeg;base64,@(Model.CstomConvert.FileToBase64(Model.FaceImage))"/>
-        </div>
-    }
-    
     if (Model.SwapImage != null)
     {
-        <div>
-            <h4>Замена лица</h4>
-            <img style='width:500px;' src="data:image/jpeg;base64,@(Model.CstomConvert.FileToBase64(Model.SwapImage))"/>
-        </div>
-    }
-    
-    if (Model.EnchancedSwapImage != null)
-    {
-        <div>
-            <h4>Улучшение лица</h4>
-            <img style='width:500px;' src="data:image/jpeg;base64,@(Model.CstomConvert.FileToBase64(Model.EnchancedSwapImage))"/>
+        <br>
+        <p class="text-muted">Output</p>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.SwapImage))"/>
+                            <div class="card-body">
+                                <p class="card-text">Face replacement result.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        @* <input id="face-input" type="file" accept="image/*" name="body"/> *@
+                                    </div>
+                                    @* <small class="text-muted">9 mins</small> *@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @{
+                        if (Model.EnchancedSwapImage != null)
+                        {
+                            <div class="col">
+                                <div class="card shadow-sm">
+                                    <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.EnchancedSwapImage))"/>
+                                    <div class="card-body">
+                                        <p class="card-text">Face replacement result with post-processing.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                @* <input id="face-input" type="file" accept="image/*" name="body"/> *@
+                                            </div>
+                                            @* <small class="text-muted">9 mins</small> *@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
         </div>
     }
 }
-
-@* <form
-
-
- asp-action="AddFile" asp-controller="Home" method="post" enctype="multipart/form-data"> *@
-@*     <input type="file" name="uploads" /><br> *@
-@*     <input type="file" name="uploads" /><br> *@
-@*     <input type="file" name="uploads" /><br> *@
-@*     <input type="submit" value="Загрузить" /> *@
-@* </form> *@
-
-@* $1$ <p>Обработка одиночных изображений</p> #1# *@
-@* *@
-@* @using System.Web; *@
-@* @using System.Web.Helpers; *@
-@* @using Microsoft.AspNetCore.Mvc; *@
-@* @using Microsoft.AspNetCore.Http; *@
-@* *@
-@* @{ *@
-@*     WebImage photo = null; *@
-@*     var newFileName = ""; *@
-@*     var imagePath = ""; *@
-@* *@
-@*     // System.Web.HttpContext.Current; *@
-@*     // *@
-@*     // this.ControllerContext.HttpContext *@
-@*      *@
-@*     photo = WebImage.GetImageFromRequest(); *@
-@*     if (photo != null) *@
-@*     { *@
-@*         newFileName = Guid.NewGuid().ToString() + "_" + *@
-@*                       System.IO.Path.GetFileName(photo.FileName); *@
-@*         imagePath = @"images\" + newFileName; *@
-@* *@
-@*         photo.Save(@"~\" + imagePath); *@
-@*     } *@
-@* } *@
-@* <!DOCTYPE html> *@
-@* <html> *@
-@* <head> *@
-@*     <title>Image Upload</title> *@
-@* </head> *@
-@* <body> *@
-@* <form action="" method="post" enctype="multipart/form-data"> *@
-@*     <fieldset> *@
-@*         <legend> Upload Image </legend> *@
-@*         <label for="Image">Image</label> *@
-@*         <input type="file" name="Image"/> *@
-@*         <br/> *@
-@*         <input type="submit" value="Upload"/> *@
-@*     </fieldset> *@
-@* </form> *@
-@* <h1>Uploaded Image</h1> *@
-@* @if (imagePath != "") *@
-@* { *@
-@*     <div class="result"> *@
-@*         <img src="@imagePath" alt="image"/> *@
-@* *@
-@*     </div> *@
-@* } *@
-@* </body> *@
-@* </html> *@
-
-@* <PageTitle>Counter</PageTitle> *@
-@* *@
-@* <h1>Counter</h1> *@
-@* *@
-@* <p role="status">Current count: @currentCount</p> *@
-@* *@
-@* <button class="btn btn-primary" @onclick="IncrementCount">Click me</button> *@
-@* *@
-@* @code { *@
-@*     private int currentCount = 0; *@
-@* *@
-@*     private void IncrementCount() *@
-@*     { *@
-@*         currentCount++; *@
-@*     } *@
-@* } *@
-
-@* <form enctype="multipart/form-data" method="post"> *@
-@*     <dl> *@
-@*         <dt> *@
-@*             <label asp-for="FileUpload.FormFile"></label> *@
-@*         </dt> *@
-@*         <dd> *@
-@*             <input asp-for="FileUpload.FormFile" type="file"> *@
-@*             <span asp-validation-for="FileUpload.FormFile"></span> *@
-@*         </dd> *@
-@*     </dl> *@
-@*     <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" /> *@
-@* </form> *@

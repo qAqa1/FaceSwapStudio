@@ -29,10 +29,11 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        return View("SingleImagesProcessing", _faceSwapModel);
+        // return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult License()
     {
         return View();
     }
@@ -42,53 +43,14 @@ public class HomeController : Controller
         return View(_faceSwapModel);
     }
 
-    // public async Task<string> UploadFile(IFormFile file)
-    // {
-    //     // создаем папку для хранения файлов
-    //     Directory.CreateDirectory(UploadPath);
-    //         
-    //     var extension = Path.GetExtension(file.FileName);
-    //     var trustedFileNameForFileStorage = Path.ChangeExtension(Path.GetRandomFileName(), extension);
-    //     var savePath = Path.Combine(UploadPath, trustedFileNameForFileStorage);
-    //     
-    //     using (var fileStream = new FileStream(savePath, FileMode.Create))
-    //         await file.CopyToAsync(fileStream);
-    //
-    //     return savePath;
-    // }
-    //
-    // private static readonly string UploadPath = $"{Directory.GetCurrentDirectory()}/Uploads";
-
     [HttpPost]
     public async Task<IActionResult> UploadImagesForSwap(IFormFile body, IFormFile face)
     {
+        // var bodyInput = (body != null) ? body : _faceSwapModel.BodyImage;
+        // var faceInput = (face != null) ? body : _faceSwapModel.FaceImage;
+        
         if (body != null && face != null)
         {
-            // if (!ModelState.IsValid)
-            //     return BadRequest(ModelState);
-            //
-            // _bodyFilename = await UploadFile(body);
-            // _faceFilename = await UploadFile(face);
-            //
-            // Debug.WriteLine("Body filename: " + _bodyFilename);
-            // Debug.WriteLine("Face filename: " + _faceFilename);
-
-
-            // Console.WriteLine("EnchanceFaces:");
-            //
-            // var base64Image =
-            //     Convert.ToBase64String(File.ReadAllBytes("../../../../../faceSwapApi/test_images/face_swap_result.png"));
-            //
-            // var request = new FaceProcessingApi.EnchanceFaceApi.EnchanceFacesRequest(1, base64Image);
-            // // var request = new FaceProcessingApi.EnchanceFaceApi.EnchanceFacesRequest(1, "sadasfdasf");
-            // var result = await FaceProcessingApi.FaceProcessingApiController.EnchanceFaceApi.EnchanceFaces(request);
-            //
-            // // if (result != null)
-            // //     Console.WriteLine("Image is null: " + (result.Image == null));
-            //
-            // if (result.Image != null)
-            //     File.WriteAllBytes("enchance_face_result.png", Convert.FromBase64String(result.Image));
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -111,11 +73,7 @@ public class HomeController : Controller
                 _faceSwapModel.SwapImage = _customConvert.Base64ToFile(swapFaceResult.Image);
 
                 var enchanceFacesRequest = new EnchanceFacesRequest(1, swapFaceResult.Image);
-                // var request = new FaceProcessingApi.EnchanceFaceApi.EnchanceFacesRequest(1, "sadasfdasf");
                 var enchanceFacesResult = await _faceProcessingApi.EnchanceFaceApi.EnchanceFaces(enchanceFacesRequest);
-
-                // if (result != null)
-                //     Console.WriteLine("Image is null: " + (result.Image == null));
 
                 if (enchanceFacesResult != null && enchanceFacesResult.Image != null)
                     _faceSwapModel.EnchancedSwapImage = _customConvert.Base64ToFile(enchanceFacesResult.Image);
@@ -123,50 +81,7 @@ public class HomeController : Controller
         }
 
         return View("SingleImagesProcessing", _faceSwapModel);
-        // return RedirectToAction("Index");
     }
-
-    // [HttpPost]
-    // public async Task<IActionResult> AddFile(IFormFile uploadedFile)
-    // {
-    //     if (uploadedFile != null)
-    //     {
-    //         // var trustedFileNameForDisplay = WebUtility.HtmlEncode(
-    //         //     contentDisposition.FileName.Value);
-    //         // var trustedFileNameForFileStorage = Path.GetRandomFileName();
-    //
-    //         // // путь к папке Files
-    //         // string path = "/Files/" + uploadedFile.FileName;
-    //         // // сохраняем файл в папку Files в каталоге wwwroot
-    //         // using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
-    //         // {
-    //         //     await uploadedFile.CopyToAsync(fileStream);
-    //         // }
-    //         // FileModel file = new FileModel { Name = uploadedFile.FileName, Path = path };
-    //         // _context.Files.Add(file);
-    //         // _context.SaveChanges();
-    //         
-    //         // создаем папку для хранения файлов
-    //         Directory.CreateDirectory(UploadPath);
-    //         
-    //         var extension = Path.GetExtension(uploadedFile.FileName);
-    //         var trustedFileNameForFileStorage = Path.ChangeExtension(Path.GetRandomFileName(), extension);
-    //         
-    //         if (!ModelState.IsValid)
-    //         {
-    //             return BadRequest(ModelState);
-    //         }
-    //
-    //         var savePath = Path.Combine(UploadPath, trustedFileNameForFileStorage);
-    //         Debug.WriteLine("Save path: " + savePath);
-    //         
-    //         using (var fileStream = new FileStream(savePath, FileMode.Create))
-    //         {
-    //             await uploadedFile.CopyToAsync(fileStream);
-    //         }
-    //     }
-    //     return RedirectToAction("Index");
-    // }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
