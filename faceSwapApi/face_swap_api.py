@@ -3,30 +3,9 @@ from fastapi import FastAPI, Depends, Request, HTTPException
 import core.face_swap_core as face_swap
 from core import converter
 
+import json
+
 app = FastAPI()
-
-
-# http://127.0.0.1:8000/get_image
-# @app.post("/copy_image")
-# async def copy_image(request: Request):
-#     message = await request.json()
-#     # print('result:')
-#     # print(type(msg))
-#     # print(msg)
-#
-#     received_image = converter.base64_to_cvimage(message['image'])
-#     # cv2.imwrite("test.png", received_image)
-#
-#     # received_image[:] = (255, 0, 0)
-#
-#     base64_result_image = converter.cvimage_to_base64(received_image)
-#     # print(base64_result_image)
-#
-#     result = {
-#         "image": base64_result_image
-#     }
-#
-#     return result
 
 
 class FaceRectangle:
@@ -45,7 +24,8 @@ class FaceRectangle:
         }
 
     def __str__(self):
-        return '{ x1 = ' + str(self.x1) + ', y1 = ' + str(self.y1) + ', x2 = ' + str(self.x2) + ', y2 = ' + str(self.y2) + ' }'
+        return '{ x1 = ' + str(self.x1) + ', y1 = ' + str(self.y1) + ', x2 = ' + str(self.x2) + ', y2 = ' + str(
+            self.y2) + ' }'
 
     x1 = 0
     y1 = 0
@@ -81,7 +61,6 @@ def detect_faces_handler(json_dict):
     detected_faces_rectangles_formated = [FaceRectangle(rectangle) for rectangle in detected_faces_rectangles]
 
     return face_swap.FaceProcessingStatus.SUCCESS, detected_faces_rectangles_formated
-    # return face_swap.FaceProcessingStatus.SUCCESS, detected_faces_rectangles
 
 
 # http://127.0.0.1:8000/detect_faces
@@ -99,7 +78,6 @@ async def detect_faces(request: Request):
     result_dict = {
         'status': status.value,
         'detectedFacesRectangles': []
-        # 'detected_faces_rectangles': detected_faces_rectangles
     }
 
     [result_dict['detectedFacesRectangles'].append(rectangle.pack_to_dict()) for rectangle in detected_faces_rectangles]
@@ -161,4 +139,14 @@ async def swap_face(request: Request):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    configuration_file = 'ApiConfiguration.json'
+
+    with open(configuration_file) as json_data:
+        data = json.load(json_data)
+
+    print('Configuration:')
+    print(data)
+
+    is_local_network_available: bool = data['IsLocalNetworkAvailable']
+
+    uvicorn.run(app, host="0.0.0.0" if is_local_network_available else "localhost", port=8000)
