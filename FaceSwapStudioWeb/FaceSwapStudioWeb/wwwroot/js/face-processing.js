@@ -67,8 +67,8 @@ function swapFace() {
         // FaceImage: document.getElementById('face-input').file,
         // BodyImage: bodyData,
         // FaceImage: faceData,
-        BodyImage: toBase64(document.getElementById('body-input').files[0]),
-        FaceImage: toBase64(document.getElementById('face-input').files[0]),
+        BodyImage: "toBase64(document.getElementById('body-input').files[0])",
+        FaceImage: "toBase64(document.getElementById('face-input').files[0])",
         BodyImageFaceIndex: 2
     };
     
@@ -87,7 +87,7 @@ function swapFace() {
         body: JSON.stringify(request)
     })
         // .then(response => response.json())
-        .then(response => alert(JSON.stringify(response.json())))
+        .then(response => console.log(JSON.stringify(response.json())))
         // .then(data => _handleSwapFace(data))
         //.catch(error => console.error('Unable swap face.', error));
 }
