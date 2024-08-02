@@ -48,13 +48,13 @@ function swapFace() {
     // var faceData = new FormData();
     // faceData.append(document.getElementById('face-input').files[0])
 
-    console.log(document.getElementById('face-input').files.length);
+    // console.log(document.getElementById('face-input').files.length);
 
     // getBase64(document.getElementById('body-input').files[0]);
     // getBase64(document.getElementById('face-input').files[0]);
     
-    console.log(toBase64(document.getElementById('body-input').files[0]))
-    console.log(toBase64(document.getElementById('face-input').files[0]))
+    // console.log(toBase64(document.getElementById('body-input').files[0]))
+    // console.log(toBase64(document.getElementById('face-input').files[0]))
     
     const request = {
         // BodyImage: null,
@@ -87,9 +87,18 @@ function swapFace() {
         body: JSON.stringify(request)
     })
         // .then(response => response.json())
-        .then(response => console.log(JSON.stringify(response.json())))
+        // .then(response => {
+        //     for(header of response.headers){
+        //         console.log(header[0],":",header[1]);
+        //     } 
+        // })
+            // alert(response.type))
+            // alert(JSON.stringify(response)))
         // .then(data => _handleSwapFace(data))
         //.catch(error => console.error('Unable swap face.', error));
+        .then(response => response.json())
+        // .then(data => alert(JSON.stringify(data)));
+        .then(data => alert(data.swapImage));
 }
 
 var toType = function(obj) {
