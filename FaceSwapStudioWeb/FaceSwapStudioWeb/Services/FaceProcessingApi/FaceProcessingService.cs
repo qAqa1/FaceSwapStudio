@@ -4,9 +4,9 @@ using FaceSwapApiCaller.FaceProcessingApi.SwapFaceApi;
 
 namespace FaceSwapApiCaller.FaceProcessingApi;
 
-public class FaceProcessingApi
+public class FaceProcessingService
 {
-    public FaceProcessingApi(Configuration.FaceProcessingApiConfiguration configuration)
+    public FaceProcessingService(Configuration.FaceProcessingApiConfiguration configuration)
     {
         // var config = new ConfigurationBuilder().AddJsonFile("ExternalApiSettings.json").Build();
         // var faceSwapApiUrl = config.GetValue<string>("ApiUrl:FaceSwapApi");

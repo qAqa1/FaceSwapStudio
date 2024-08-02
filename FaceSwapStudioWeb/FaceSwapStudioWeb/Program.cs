@@ -14,7 +14,7 @@ var faceSwapApiUrl = config.GetValue<string>("ApiUrl:FaceSwapApi");
 var stableDiffusionApiUrl = config.GetValue<string>("ApiUrl:StableDiffusionApiUrl");
 FaceProcessingApiConfiguration externalApiConfiguration = new(faceSwapApiUrl, stableDiffusionApiUrl);
 
-builder.Services.AddSingleton<FaceProcessingApi>(new FaceProcessingApi(externalApiConfiguration));
+builder.Services.AddSingleton<FaceProcessingService>(new FaceProcessingService(externalApiConfiguration));
 
 var app = builder.Build();
 

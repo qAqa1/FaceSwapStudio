@@ -12,16 +12,16 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
 
-    private readonly FaceProcessingApi _faceProcessingApi;
+    private readonly FaceProcessingService _faceProcessingService;
     private readonly CustomConvert _customConvert;
 
     private readonly FaceSwapModel _faceSwapModel;
 
-    public HomeController(ILogger<HomeController> logger, FaceProcessingApi faceProcessingApi,
+    public HomeController(ILogger<HomeController> logger, FaceProcessingService faceProcessingService,
         CustomConvert customConvert)
     {
         _logger = logger;
-        _faceProcessingApi = faceProcessingApi;
+        _faceProcessingService = faceProcessingService;
         _customConvert = customConvert;
 
         _faceSwapModel = new FaceSwapModel(_customConvert);
@@ -66,14 +66,14 @@ public class HomeController : Controller
             var targetFaceIndex = 0;
 
             var swapFaceRequest = new SwapFaceRequest(base64BodyImage, base64FaceImage, targetFaceIndex);
-            var swapFaceResult = await _faceProcessingApi.SwapFaceApi.SwapFace(swapFaceRequest);
+            var swapFaceResult = await _faceProcessingService.SwapFaceApi.SwapFace(swapFaceRequest);
 
             if (swapFaceResult is { Status: FaceProcessingStatus.Success })
             {
                 _faceSwapModel.SwapImage = _customConvert.Base64ToFile(swapFaceResult.Image);
 
                 var enchanceFacesRequest = new EnchanceFacesRequest(1, swapFaceResult.Image);
-                var enchanceFacesResult = await _faceProcessingApi.EnchanceFaceApi.EnchanceFaces(enchanceFacesRequest);
+                var enchanceFacesResult = await _faceProcessingService.EnchanceFaceApi.EnchanceFaces(enchanceFacesRequest);
 
                 if (enchanceFacesResult != null && enchanceFacesResult.Image != null)
                     _faceSwapModel.EnchancedSwapImage = _customConvert.Base64ToFile(enchanceFacesResult.Image);
