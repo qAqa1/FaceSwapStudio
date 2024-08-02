@@ -8,7 +8,8 @@ ViewData["Title"] = "Face swap";
 <h1 class="fw-light">Single images processing</h1>
 <p class="text-muted">Input</p>
 
-<form asp-action="UploadImagesForSwap" method="post" enctype="multipart/form-data">
+@* <form asp-action="UploadImagesForSwap" method="post" enctype="multipart/form-data"> *@
+<form action="javascript:void(0);" onsubmit="swapFace()">
     <div class="album py-5 bg-light">
         <div class="container">
 
@@ -68,6 +69,7 @@ ViewData["Title"] = "Face swap";
         </div>
     </div>
 
+    @* <input type="submit" value="Face swap" class="btn btn-primary my-2"/> *@
     <input type="submit" value="Face swap" class="btn btn-primary my-2"/>
 </form>
 

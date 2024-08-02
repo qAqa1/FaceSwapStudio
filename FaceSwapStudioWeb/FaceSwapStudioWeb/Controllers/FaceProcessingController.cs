@@ -47,46 +47,50 @@ public class FaceProcessingController : ControllerBase
     [Route("SwapFace")]
     public async Task<ActionResult<FaceSwapResultModel>> SwapFace(FaceSwapRequestModel request)
     {
-        if (ModelState.IsValid && request.BodyImage != null && request.FaceImage != null)
-        {
-            var base64BodyImage =
-                _customConvert.FileToBase64(request.BodyImage);
-    
-            var base64FaceImage =
-                _customConvert.FileToBase64(request.FaceImage);
-    
-            var targetFaceIndex = request.BodyImageFaceIndex;
-    
-            var swapFaceRequest = new SwapFaceRequest(base64BodyImage, base64FaceImage, targetFaceIndex);
-            var swapFaceResult = await _faceProcessingService.SwapFaceApi.SwapFace(swapFaceRequest);
-            
-            var resultModel = new FaceSwapResultModel();
-            resultModel.ProcessingStatus = (swapFaceResult != null && swapFaceResult.Status.HasValue) ? swapFaceResult.Status.Value : FaceProcessingStatus.Unknown;
-            
-            if (swapFaceResult is { Status: FaceProcessingStatus.Success })
-            {
-                // HttpContext.Response.ContentType = "application/json";
-                // FileContentResult result = new FileContentResult(System.IO.File.ReadAllBytes("YOUR PATH TO PDF"), "application/pdf")
-                // {
-                //     FileDownloadName = "test.pdf"
-                // };
-                
-                // var f1 = _customConvert.Base64ToFile(swapFaceResult.Image);
-                // var f2 = request.FaceImage;
-                
-                resultModel.SwapImage =  new FileContentResult(Convert.FromBase64String(swapFaceResult.Image), "application/json");
-            
-            var enchanceFacesRequest = new EnchanceFacesRequest(1, swapFaceResult.Image);
-            var enchanceFacesResult = await _faceProcessingService.EnchanceFaceApi.EnchanceFaces(enchanceFacesRequest);
-            
-            // if (enchanceFacesResult is { Image: not null }) resultModel.EnchancedSwapImage = _customConvert.Base64ToFile(enchanceFacesResult.Image);
-            if (enchanceFacesResult is { Image: not null }) resultModel.EnchancedSwapImage = new FileContentResult(Convert.FromBase64String(enchanceFacesResult.Image), "application/json");
-
-                return resultModel;
-            }
-        }
-    
-        return new FaceSwapResultModel();
+        var result = new FaceSwapResultModel();
+        result.SwapImage = request.FaceImage;
+        return result;
+        
+        // if (ModelState.IsValid && request.BodyImage != null && request.FaceImage != null)
+        // {
+        //     var base64BodyImage =
+        //         _customConvert.FileToBase64(request.BodyImage);
+        //
+        //     var base64FaceImage =
+        //         _customConvert.FileToBase64(request.FaceImage);
+        //
+        //     var targetFaceIndex = request.BodyImageFaceIndex;
+        //
+        //     var swapFaceRequest = new SwapFaceRequest(base64BodyImage, base64FaceImage, targetFaceIndex);
+        //     var swapFaceResult = await _faceProcessingService.SwapFaceApi.SwapFace(swapFaceRequest);
+        //     
+        //     var resultModel = new FaceSwapResultModel();
+        //     resultModel.ProcessingStatus = (swapFaceResult != null && swapFaceResult.Status.HasValue) ? swapFaceResult.Status.Value : FaceProcessingStatus.Unknown;
+        //     
+        //     if (swapFaceResult is { Status: FaceProcessingStatus.Success })
+        //     {
+        //         // HttpContext.Response.ContentType = "application/json";
+        //         // FileContentResult result = new FileContentResult(System.IO.File.ReadAllBytes("YOUR PATH TO PDF"), "application/pdf")
+        //         // {
+        //         //     FileDownloadName = "test.pdf"
+        //         // };
+        //         
+        //         // var f1 = _customConvert.Base64ToFile(swapFaceResult.Image);
+        //         // var f2 = request.FaceImage;
+        //         
+        //         resultModel.SwapImage =  new FileContentResult(Convert.FromBase64String(swapFaceResult.Image), "application/json");
+        //     
+        //     var enchanceFacesRequest = new EnchanceFacesRequest(1, swapFaceResult.Image);
+        //     var enchanceFacesResult = await _faceProcessingService.EnchanceFaceApi.EnchanceFaces(enchanceFacesRequest);
+        //     
+        //     // if (enchanceFacesResult is { Image: not null }) resultModel.EnchancedSwapImage = _customConvert.Base64ToFile(enchanceFacesResult.Image);
+        //     if (enchanceFacesResult is { Image: not null }) resultModel.EnchancedSwapImage = new FileContentResult(Convert.FromBase64String(enchanceFacesResult.Image), "application/json");
+        //
+        //         return resultModel;
+        //     }
+        // }
+        //
+        // return new FaceSwapResultModel();
     }
     
     // [HttpPost]

@@ -13,12 +13,66 @@
 
 // getData()
 
+function toBase64 (file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    return reader.result;
+}
+
+// function getBase64(file) {
+//     var reader = new FileReader();
+//     reader.readAsDataURL(file);
+//     reader.onload = function () {
+//         console.log(reader.result);
+//     };
+//     reader.onerror = function (error) {
+//         console.log('Error: ', error);
+//     };
+// }
+
+// function getBase64(file) {
+//     var reader = new FileReader();
+//     reader.readAsDataURL(file);
+//     reader.onload = function () {
+//         console.log(reader.result);
+//     };
+//     reader.onerror = function (error) {
+//         console.log('Error: ', error);
+//     };
+// }
+
 function swapFace() {
+    // var bodyData = new FormData();
+    // bodyData.append(document.getElementById('body-input').files[0])
+    //
+    // var faceData = new FormData();
+    // faceData.append(document.getElementById('face-input').files[0])
+
+    console.log(document.getElementById('face-input').files.length);
+
+    // getBase64(document.getElementById('body-input').files[0]);
+    // getBase64(document.getElementById('face-input').files[0]);
+    
+    console.log(toBase64(document.getElementById('body-input').files[0]))
+    console.log(toBase64(document.getElementById('face-input').files[0]))
+    
     const request = {
-        BodyImage: null,
-        FaceImage: null,
+        // BodyImage: null,
+        // FaceImage: null,
+        // BodyImage: document.getElementById('body-input').files[0],
+        // FaceImage: document.getElementById('face-input').files[0],
+        // BodyImage: new FormData(document.getElementById('body-input').file),
+        // FaceImage: new FormData(document.getElementById('face-input').file),
+        // BodyImage: document.getElementById('body-input').file,
+        // FaceImage: document.getElementById('face-input').file,
+        // BodyImage: bodyData,
+        // FaceImage: faceData,
+        BodyImage: toBase64(document.getElementById('body-input').files[0]),
+        FaceImage: toBase64(document.getElementById('face-input').files[0]),
         BodyImageFaceIndex: 2
     };
+    
+    console.log(JSON.stringify(request));
 
     // const request = {
     //     test: 3,
@@ -33,7 +87,7 @@ function swapFace() {
         body: JSON.stringify(request)
     })
         // .then(response => response.json())
-        // .then(response => alert(JSON.stringify(response.json())))
+        .then(response => alert(JSON.stringify(response.json())))
         // .then(data => _handleSwapFace(data))
         //.catch(error => console.error('Unable swap face.', error));
 }
@@ -50,4 +104,4 @@ function _handleSwapFace(data) {
     //console.log("Obama")
 }
 
-swapFace()
+// swapFace()

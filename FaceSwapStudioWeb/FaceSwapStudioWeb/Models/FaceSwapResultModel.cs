@@ -5,7 +5,7 @@ namespace FaceSwapStudioWeb.Models;
 
 public class FaceSwapResultModel
 {
-    public FaceProcessingStatus ProcessingStatus { get; set; } = FaceProcessingStatus.Unknown;
-    public FileResult? SwapImage { get; set; }
-    public FileResult? EnchancedSwapImage { get; set; }
+    public FaceProcessingStatus? ProcessingStatus { get; set; } = FaceProcessingStatus.Unknown;
+    public string? SwapImage { get; set; }
+    public string? EnchancedSwapImage { get; set; }
 }
