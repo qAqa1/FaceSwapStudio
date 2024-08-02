@@ -2,7 +2,7 @@ namespace FaceSwapApiCaller.FaceProcessingApi.SwapFaceApi;
 
 public enum FaceProcessingStatus
 {
-    Unknown = 0,
+    UnknownError = 0,
     Success = 1,
     UnexpectedError = 2,
     SourceImageNoFaceError = 3,

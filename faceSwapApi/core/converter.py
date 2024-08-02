@@ -6,6 +6,7 @@ import imageio
 
 def base64_to_cvimage(base64str):
     received_image = imageio.v2.imread(io.BytesIO(base64.b64decode(base64str)))
+    # received_image = imageio.v2.imread(io.BytesIO(base64.b64decode(base64.decodebytes(base64str.split(",")[1]))))
     # return cv2.cvtColor(received_image, cv2.COLOR_RGBA2BGRA)
     return cv2.cvtColor(received_image, cv2.COLOR_RGB2BGR)
 

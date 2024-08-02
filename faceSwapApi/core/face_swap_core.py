@@ -14,7 +14,7 @@ swapper = insightface.model_zoo.get_model('core/inswapper_128.onnx',
 
 
 class FaceProcessingStatus(IntEnum):
-    UNKNOWN = 0
+    UNKNOWN_ERROR = 0
     SUCCESS = 1
     UNEXPECTED_ERROR = 2
     SOURCE_IMAGE_NO_FACE_ERROR = 3

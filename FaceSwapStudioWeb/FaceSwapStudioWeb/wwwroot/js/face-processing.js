@@ -1,82 +1,61 @@
 ﻿const faceProcessingUri = 'api/FaceProcessing';
 
-// function getData() {
-//     fetch(faceProcessingUri)
-//         .then(response => response.json())
-//         .then(data => _displayItems(data))
-//         .catch(error => console.error('Unable to get items.', error));
-// }
-//
-// function _displayItems(data) {
-//     alert("ochko")
-// }
+function swapFace() {
+    var bodyInput = document.getElementById('body-input');
+    var faceInput = document.getElementById('face-input');
 
-// getData()
+    if (bodyInput.files.length < 1) {
+        console.log("Body image for swap not selected");
+        return;
+    }
 
-function toBase64 (file) {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    return reader.result;
+    if (faceInput.files.length < 1) {
+        console.log("Face image  for swap not selected");
+        return;
+    }
+
+    var bodyReader = new FileReader();
+    bodyReader.readAsDataURL(bodyInput.files[0]);
+    bodyReader.onload = function () {
+        var faceReader = new FileReader();
+        faceReader.readAsDataURL(faceInput.files[0]);
+        faceReader.onload = function () {
+            // console.log(bodyReader.result);
+            // console.log(faceReader.result);
+
+            // alert(bodyReader.result.split(',').length);
+
+            var bodyImageArray = bodyReader.result.split(',');
+            if (bodyImageArray.length !== 2) {
+                console.log("Body image failed extract data");
+                return;
+            }
+
+            var faceImageArray = faceReader.result.split(',');
+            if (faceImageArray.length !== 2) {
+                console.log("Face image failed extract data");
+                return;
+            }
+
+            _handleSwapFace(bodyImageArray[1], faceImageArray[1])
+        };
+        faceReader.onerror = function (error) {
+            console.log('Unable to load face: ', error);
+        };
+    };
+    bodyReader.onerror = function (error) {
+        console.log('Unable to load body: ', error);
+    };
 }
 
-// function getBase64(file) {
-//     var reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = function () {
-//         console.log(reader.result);
-//     };
-//     reader.onerror = function (error) {
-//         console.log('Error: ', error);
-//     };
-// }
-
-// function getBase64(file) {
-//     var reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = function () {
-//         console.log(reader.result);
-//     };
-//     reader.onerror = function (error) {
-//         console.log('Error: ', error);
-//     };
-// }
-
-function swapFace() {
-    // var bodyData = new FormData();
-    // bodyData.append(document.getElementById('body-input').files[0])
-    //
-    // var faceData = new FormData();
-    // faceData.append(document.getElementById('face-input').files[0])
-
-    // console.log(document.getElementById('face-input').files.length);
-
-    // getBase64(document.getElementById('body-input').files[0]);
-    // getBase64(document.getElementById('face-input').files[0]);
-    
-    // console.log(toBase64(document.getElementById('body-input').files[0]))
-    // console.log(toBase64(document.getElementById('face-input').files[0]))
-    
+function _handleSwapFace(bodyImage, faceImage) {
     const request = {
-        // BodyImage: null,
-        // FaceImage: null,
-        // BodyImage: document.getElementById('body-input').files[0],
-        // FaceImage: document.getElementById('face-input').files[0],
-        // BodyImage: new FormData(document.getElementById('body-input').file),
-        // FaceImage: new FormData(document.getElementById('face-input').file),
-        // BodyImage: document.getElementById('body-input').file,
-        // FaceImage: document.getElementById('face-input').file,
-        // BodyImage: bodyData,
-        // FaceImage: faceData,
-        BodyImage: "toBase64(document.getElementById('body-input').files[0])",
-        FaceImage: "toBase64(document.getElementById('face-input').files[0])",
-        BodyImageFaceIndex: 2
+        BodyImage: bodyImage,
+        FaceImage: faceImage,
+        BodyImageFaceIndex: 0
     };
-    
-    console.log(JSON.stringify(request));
 
-    // const request = {
-    //     test: 3,
-    // };
+    // console.log(JSON.stringify(request));
 
     fetch(faceProcessingUri + '/SwapFace', {
         method: 'POST',
@@ -86,31 +65,44 @@ function swapFace() {
         },
         body: JSON.stringify(request)
     })
-        // .then(response => response.json())
-        // .then(response => {
-        //     for(header of response.headers){
-        //         console.log(header[0],":",header[1]);
-        //     } 
-        // })
-            // alert(response.type))
-            // alert(JSON.stringify(response)))
-        // .then(data => _handleSwapFace(data))
-        //.catch(error => console.error('Unable swap face.', error));
         .then(response => response.json())
         // .then(data => alert(JSON.stringify(data)));
-        .then(data => alert(data.swapImage));
-}
+        .then(data => {
+                // alert(data.processingStatus);
 
-var toType = function(obj) {
-    return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-}
+                var resultContainer = document.getElementById('result-container');
 
-function _handleSwapFace(data) {
-    alert(data)
-    //alert(data.ProcessingStatus)
-    // var status = data.ProcessingStatus;
-    // alert(toType(data.SwapImage))
-    //console.log("Obama")
-}
+                if (data.processingStatus !== 1) {
+                    resultContainer.style.display = 'none';
+                    return;
+                }
 
-// swapFace()
+                var swapImageContainer = document.getElementById('swap-image-container');
+                var swapImageTag = document.getElementById('swap-image');
+
+                var enchancedSwapImageContainer = document.getElementById('enchanced-swap-image-container');
+                var enchancedSwapImageTag = document.getElementById('enchanced-swap-image');
+
+                if (data.swapImage == null && (data.enchancedSwapImage == null)) {
+                    resultContainer.style.display = 'none';
+                    return;
+                } else
+                    resultContainer.style.display = 'block';
+
+                if (data.swapImage != null) {
+                    swapImageContainer.style.display = 'block';
+                    swapImageTag.src = "data:image/png;base64," + data.swapImage;
+                } else
+                    swapImageTag.style.display = 'none';
+
+                if (data.enchancedSwapImage != null) {
+                    enchancedSwapImageContainer.style.display = 'block';
+                    enchancedSwapImageTag.src = "data:image/png;base64," + data.enchancedSwapImage;
+                } else
+                    enchancedSwapImageTag.style.display = 'none';
+
+                if (data.swapImage != null)
+                    window.scrollTo(0, document.body.scrollHeight);
+            }
+        );
+}

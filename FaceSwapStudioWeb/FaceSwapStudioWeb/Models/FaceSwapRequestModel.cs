@@ -8,10 +8,3 @@ public class FaceSwapRequestModel
     public string FaceImage { get; set; }
     public int BodyImageFaceIndex { get; set; }
 }
-
-// public class FaceSwapRequest2Model
-// {
-//     public int BodyImage { get; set; }
-//     public int FaceImage { get; set; }
-//     public int BodyImageFaceIndex { get; set; }
-// }

@@ -1,7 +1,5 @@
-@model FaceSwapStudioWeb.Models.FaceSwapModel
-
 @{
-ViewData["Title"] = "Face swap";
+    ViewData["Title"] = "Face swap";
 }
 <h1>@ViewData["Title"]</h1>
 
@@ -17,17 +15,6 @@ ViewData["Title"] = "Face swap";
                 <div class="col">
                     <div class="card shadow-sm">
                         <img id="body-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
-
-                        @{
-                            if (Model.BodyImage == null)
-                            {
-                                <img id="body-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
-                            }
-                            else
-                            {
-                                <img id="body-image" class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.BodyImage))"/>
-                            }
-                        }
                         <div class="card-body">
                             <p class="card-text">Choose a body. Select an image in which the face is clearly visible.</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -43,17 +30,7 @@ ViewData["Title"] = "Face swap";
                 <div class="col">
                     <div class="card shadow-sm">
                         @* <img id="face-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/> *@
-
-                        @{
-                            if (Model.FaceImage == null)
-                            {
-                                <img id="face-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
-                            }
-                            else
-                            {
-                                <img id="face-image" class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.FaceImage))"/>
-                            }
-                        }
+                        <img id="face-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
                         <div class="card-body">
                             <p class="card-text">Choose a face. Select an image in which the face is clearly visible.</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -103,52 +80,48 @@ ViewData["Title"] = "Face swap";
     }
 </script>
 
-@{
-    if (Model.SwapImage != null)
-    {
-        <br>
-        <p class="text-muted">Output</p>
+<div id="result-container" style="display: none;">
+    <br>
+    <p class="text-muted">Output</p>
 
-        <div class="album py-5 bg-light">
-            <div class="container">
+    <div class="album py-5 bg-light">
+        <div class="container">
 
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.SwapImage))"/>
-                            <div class="card-body">
-                                <p class="card-text">Face replacement result.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        @* <input id="face-input" type="file" accept="image/*" name="body"/> *@
-                                    </div>
-                                    @* <small class="text-muted">9 mins</small> *@
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                
+                <div id="swap-image-container" style="display: none;" class="col">
+                    <div class="card shadow-sm">
+                        <img id="swap-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
+                        <div class="card-body">
+                            <p class="card-text">Face replacement result.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    @* <input id="face-input" type="file" accept="image/*" name="body"/> *@
                                 </div>
+                                @* <small class="text-muted">9 mins</small> *@
                             </div>
                         </div>
                     </div>
-
-                    @{
-                        if (Model.EnchancedSwapImage != null)
-                        {
-                            <div class="col">
-                                <div class="card shadow-sm">
-                                    <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.EnchancedSwapImage))"/>
-                                    <div class="card-body">
-                                        <p class="card-text">Face replacement result with post-processing.</p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                @* <input id="face-input" type="file" accept="image/*" name="body"/> *@
-                                            </div>
-                                            @* <small class="text-muted">9 mins</small> *@
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
                 </div>
+
+
+                <div id="enchanced-swap-image-container" style="display: none;" class="col">
+                    <div class="card shadow-sm">
+                        @* <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.EnchancedSwapImage))"/> *@
+                        <img id="enchanced-swap-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
+                        <div class="card-body">
+                            <p class="card-text">Face replacement result with post-processing.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    @* <input id="face-input" type="file" accept="image/*" name="body"/> *@
+                                </div>
+                                @* <small class="text-muted">9 mins</small> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-    }
-}
+    </div>
+</div>

@@ -7,8 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddTransient<CustomConvert>(); //регистрируем сервис
-
 var config = new ConfigurationBuilder().AddJsonFile("ExternalApiSettings.json").Build();
 var faceSwapApiUrl = config.GetValue<string>("ApiUrl:FaceSwapApi");
 var stableDiffusionApiUrl = config.GetValue<string>("ApiUrl:StableDiffusionApiUrl");
