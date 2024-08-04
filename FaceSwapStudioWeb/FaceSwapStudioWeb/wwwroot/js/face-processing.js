@@ -48,6 +48,19 @@ function swapFace() {
     };
 }
 
+class LastSwapCache {
+    constructor(filenamePrefix, faceImage, bodyImage, swapImage, enchancedSwapImage) {
+        this.filenamePrefix = filenamePrefix;
+
+        this.faceImage = faceImage;
+        this.bodyImage = bodyImage;
+        this.swapImage = swapImage;
+        this.enchancedSwapImage = enchancedSwapImage;
+    }
+}
+
+var lastSwapCache = new LastSwapCache("", null, null, null, null);
+
 function _handleSwapFace(bodyImage, faceImage) {
     const request = {
         BodyImage: bodyImage,
@@ -69,6 +82,21 @@ function _handleSwapFace(bodyImage, faceImage) {
         // .then(data => alert(JSON.stringify(data)));
         .then(data => {
                 // alert(data.processingStatus);
+
+                var separator = "-";
+
+                var m = new Date();
+                var dateString =
+                    m.getUTCFullYear() + separator +
+                    ("0" + (m.getUTCMonth() + 1)).slice(-2) + separator +
+                    ("0" + m.getUTCDate()).slice(-2) + "_" +
+                    ("0" + m.getUTCHours()).slice(-2) + separator +
+                    ("0" + m.getUTCMinutes()).slice(-2) + separator +
+                    ("0" + m.getUTCSeconds()).slice(-2);
+
+                console.log(dateString);
+
+                lastSwapCache = new LastSwapCache(dateString, bodyImage, faceImage, data.swapImage, data.enchancedSwapImage);
 
                 var resultContainer = document.getElementById('result-container');
 
@@ -92,12 +120,19 @@ function _handleSwapFace(bodyImage, faceImage) {
                 if (data.swapImage != null) {
                     swapImageContainer.style.display = 'block';
                     swapImageTag.src = "data:image/png;base64," + data.swapImage;
+
+                    // var a = document.createElement("a"); //Create <a>
+                    // a.href = "data:image/png;base64," + data.swapImage; //Image Base64 Goes here
+                    // a.download = "Image.png"; //File name Here
+                    // a.click(); //Downloaded file
                 } else
                     swapImageTag.style.display = 'none';
 
                 if (data.enchancedSwapImage != null) {
                     enchancedSwapImageContainer.style.display = 'block';
                     enchancedSwapImageTag.src = "data:image/png;base64," + data.enchancedSwapImage;
+
+                    enchancedSwapImageTag.style.display = 'block';
                 } else
                     enchancedSwapImageTag.style.display = 'none';
 
@@ -105,4 +140,50 @@ function _handleSwapFace(bodyImage, faceImage) {
                     window.scrollTo(0, document.body.scrollHeight);
             }
         );
+}
+
+function downloadBase64Image(filename, imageData) {
+    var a = document.createElement("a"); //Create <a>
+    a.href = "data:image/png;base64," + imageData; //Image Base64 Goes here
+    a.download = filename + ".png"; //File name Here
+    a.click(); //Downloaded file
+}
+
+function downloadSelected() {
+    var downloadBodyImage = document.getElementById('download-body-image').checked;
+    var downloadFaceImage = document.getElementById('download-face-image').checked;
+    var downloadSwapImage = document.getElementById('download-swap-image').checked;
+    var downloadEnchancedSwapImage = document.getElementById('download-enchanced-swap-image').checked;
+
+    var separator = "__";
+
+    var isDesctopSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    var isIOS = /^iP/.test(navigator.platform) ||
+        /^Mac/.test(navigator.platform) && navigator.maxTouchPoints > 4;
+
+    let timeout = 100;
+
+    if (isDesctopSafari)
+        timeout = 700;
+
+    if (isIOS)
+        timeout = 10000;
+
+    if (downloadBodyImage)
+        downloadBase64Image(lastSwapCache.filenamePrefix + separator + "body-image", lastSwapCache.bodyImage);
+
+    setTimeout(() => {
+        if (downloadFaceImage)
+            downloadBase64Image(lastSwapCache.filenamePrefix + separator + "face-image", lastSwapCache.faceImage);
+
+        setTimeout(() => {
+            if (downloadSwapImage)
+                downloadBase64Image(lastSwapCache.filenamePrefix + separator + "swap-image", lastSwapCache.swapImage);
+
+            setTimeout(() => {
+                if (downloadEnchancedSwapImage)
+                    downloadBase64Image(lastSwapCache.filenamePrefix + separator + "enchanced-swap-image", lastSwapCache.enchancedSwapImage);
+            }, timeout);
+        }, timeout);
+    }, timeout);
 }
