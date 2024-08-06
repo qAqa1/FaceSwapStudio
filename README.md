@@ -186,3 +186,5 @@ share example:
 ```
 Launch the web application. The first face replacement may be a long time because stable diffusion webui will load the necessary models.
 Urls from *applicationUrl* is urls to web app for your network or localhost.
+
+After first setup, just launch stable diffusion webui with the necessary [flags](#stable-diffusion-webui) and then run *faceSwapApi/face_swap_api.py* and then run FaceSwapStudioWeb.
