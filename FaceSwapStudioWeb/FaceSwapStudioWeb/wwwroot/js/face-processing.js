@@ -157,13 +157,13 @@ function downloadSelected() {
 
     var separator = "__";
 
-    var isDesctopSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    var isDesktopSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     var isIOS = /^iP/.test(navigator.platform) ||
         /^Mac/.test(navigator.platform) && navigator.maxTouchPoints > 4;
 
     let timeout = 100;
 
-    if (isDesctopSafari)
+    if (isDesktopSafari)
         timeout = 700;
 
     if (isIOS)
