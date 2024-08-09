@@ -24,20 +24,32 @@ public class SingleImagesProcessingResultService : ISingleImagesProcessingResult
         return model;
     }
 
-    public SingleImagesProcessingResultModel Update(SingleImagesProcessingResultModel model)
+    public SingleImagesProcessingResultModel? Update(SingleImagesProcessingResultModel model)
     {
-        var modelToUpdate = _processingResultDataContext.ProcessingResultModels.LastOrDefault(x => x.Id == model.Id);
-        
-        throw new NotImplementedException();
+        var modelToUpdate = _processingResultDataContext.ProcessingResultModels.FirstOrDefault(x => x.Id == model.Id);
+
+        // if (modelToUpdate != null)
+        // {
+            SingleImagesProcessingResultModel.CopyDataFields(model, modelToUpdate);
+            return model;
+        // }
+
+        // return null;
     }
 
     public SingleImagesProcessingResultModel Get(long id)
     {
-        throw new NotImplementedException();
+        return _processingResultDataContext.ProcessingResultModels.FirstOrDefault(x => x.Id == id);
+    }
+    
+    public List<SingleImagesProcessingResultModel> Get()
+    {
+        return _processingResultDataContext.ProcessingResultModels;
     }
 
-    public bool Delete()
+    public bool Delete(long id)
     {
-        throw new NotImplementedException();
+        var modelToDelete = _processingResultDataContext.ProcessingResultModels.FirstOrDefault(x => x.Id == id);
+        return _processingResultDataContext.ProcessingResultModels.Remove(modelToDelete);
     }
 }

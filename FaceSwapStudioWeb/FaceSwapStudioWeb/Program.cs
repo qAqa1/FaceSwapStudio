@@ -1,6 +1,8 @@
 using FaceSwapApiCaller.FaceProcessingApi;
 using FaceSwapApiCaller.FaceProcessingApi.Configuration;
+using FaceSwapStudioWeb.Data;
 using FaceSwapStudioWeb.Services;
+using FaceSwapStudioWeb.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,9 @@ var faceSwapApiUrl = config.GetValue<string>("ApiUrl:FaceSwapApi");
 var stableDiffusionApiUrl = config.GetValue<string>("ApiUrl:StableDiffusionApiUrl");
 FaceProcessingApiConfiguration externalApiConfiguration = new(faceSwapApiUrl, stableDiffusionApiUrl);
 
-builder.Services.AddSingleton<FaceProcessingService>(new FaceProcessingService(externalApiConfiguration));
+builder.Services.AddSingleton(new FaceProcessingService(externalApiConfiguration));
+builder.Services.AddTransient<ISingleImagesProcessingResultService, SingleImagesProcessingResultService>();
+builder.Services.AddSingleton<SingleImagesProcessingResultDataContext>();
 
 var app = builder.Build();
 
