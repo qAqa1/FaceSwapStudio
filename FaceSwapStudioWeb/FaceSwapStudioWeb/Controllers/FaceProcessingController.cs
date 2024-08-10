@@ -30,7 +30,7 @@ public class FaceProcessingController : ControllerBase
             var swapFaceRequest = new SwapFaceRequest(request.BodyImage, request.FaceImage, targetFaceIndex);
             var swapFaceResult = await _faceProcessingService.SwapFaceApi.SwapFace(swapFaceRequest);
 
-            var resultModel = new FaceSwapResultModel();
+            var resultModel = new FaceSwapResultModel { StartCalculationDateTime = DateTime.Now };
             resultModel.ProcessingStatus = (swapFaceResult != null && swapFaceResult.Status.HasValue)
                 ? swapFaceResult.Status.Value
                 : FaceProcessingStatus.UnknownError;
@@ -46,10 +46,11 @@ public class FaceProcessingController : ControllerBase
                 if (enchanceFacesResult is { Image: not null })
                     resultModel.EnchancedSwapImage = enchanceFacesResult.Image;
 
+                resultModel.EndCalculationDateTime = DateTime.Now;
                 return resultModel;
             }
         }
 
-        return new FaceSwapResultModel();
+        return new FaceSwapResultModel { EndCalculationDateTime = DateTime.Now };
     }
 }

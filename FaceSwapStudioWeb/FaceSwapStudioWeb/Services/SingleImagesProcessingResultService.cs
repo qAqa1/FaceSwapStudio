@@ -19,6 +19,7 @@ public class SingleImagesProcessingResultService : ISingleImagesProcessingResult
         var newId = lastModel is null ? 1 : lastModel.Id + 1;
 
         model.Id = newId;
+        // model.Date = DateTime.Now;
         _processingResultDataContext.ProcessingResultModels.Add(model);
 
         return model;

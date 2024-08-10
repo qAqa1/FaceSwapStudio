@@ -4,6 +4,8 @@ public class SingleImagesProcessingResultModel
 {
     public long Id { get; set; }
     
+    public DateTime? Date { get; set; }
+    
     public string BodyImage { get; set; }
     public string FaceImage { get; set; }
     public string SwapImage { get; set; }

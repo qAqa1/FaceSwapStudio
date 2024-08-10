@@ -49,11 +49,11 @@ function swapFace() {
 }
 
 class LastSwapCache {
-    constructor(filenamePrefix, faceImage, bodyImage, swapImage, enchancedSwapImage) {
+    constructor(filenamePrefix, bodyImage, faceImage, swapImage, enchancedSwapImage) {
         this.filenamePrefix = filenamePrefix;
-
-        this.faceImage = faceImage;
+        
         this.bodyImage = bodyImage;
+        this.faceImage = faceImage;
         this.swapImage = swapImage;
         this.enchancedSwapImage = enchancedSwapImage;
     }
@@ -81,22 +81,30 @@ function _handleSwapFace(bodyImage, faceImage) {
         .then(response => response.json())
         // .then(data => alert(JSON.stringify(data)));
         .then(data => {
-                // alert(data.processingStatus);
+            // alert(data.processingStatus);
 
-                var separator = "-";
+            var separator = "-";
 
-                var m = new Date();
-                var dateString =
-                    m.getUTCFullYear() + separator +
-                    ("0" + (m.getUTCMonth() + 1)).slice(-2) + separator +
-                    ("0" + m.getUTCDate()).slice(-2) + "_" +
-                    ("0" + m.getUTCHours()).slice(-2) + separator +
-                    ("0" + m.getUTCMinutes()).slice(-2) + separator +
-                    ("0" + m.getUTCSeconds()).slice(-2);
+            var endCalculationDateTime = new Date(Date.parse(data.endCalculationDateTime));
+            // var dateString =
+            //     calculationDateTime.getUTCFullYear() + separator +
+            //     ("0" + (calculationDateTime.getUTCMonth() + 1)).slice(-2) + separator +
+            //     ("0" + calculationDateTime.getUTCDate()).slice(-2) + "_" +
+            //     ("0" + calculationDateTime.getUTCHours()).slice(-2) + separator +
+            //     ("0" + calculationDateTime.getUTCMinutes()).slice(-2) + separator +
+            //     ("0" + calculationDateTime.getUTCSeconds()).slice(-2);
 
-                console.log(dateString);
+            var endDateString =
+                endCalculationDateTime.getFullYear() + separator +
+                ("0" + (endCalculationDateTime.getMonth() + 1)).slice(-2) + separator +
+                ("0" + endCalculationDateTime.getDate()).slice(-2) + "_" +
+                ("0" + endCalculationDateTime.getHours()).slice(-2) + separator +
+                ("0" + endCalculationDateTime.getMinutes()).slice(-2) + separator +
+                ("0" + endCalculationDateTime.getSeconds()).slice(-2);
 
-                lastSwapCache = new LastSwapCache(dateString, bodyImage, faceImage, data.swapImage, data.enchancedSwapImage);
+            console.log(endDateString);
+
+                lastSwapCache = new LastSwapCache(endDateString, bodyImage, faceImage, data.swapImage, data.enchancedSwapImage);
 
                 var resultContainer = document.getElementById('result-container');
 
