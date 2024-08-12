@@ -51,7 +51,7 @@ function swapFace() {
 class LastSwapCache {
     constructor(filenamePrefix, bodyImage, faceImage, swapImage, enchancedSwapImage) {
         this.filenamePrefix = filenamePrefix;
-        
+
         this.bodyImage = bodyImage;
         this.faceImage = faceImage;
         this.swapImage = swapImage;
@@ -81,28 +81,51 @@ function _handleSwapFace(bodyImage, faceImage) {
         .then(response => response.json())
         // .then(data => alert(JSON.stringify(data)));
         .then(data => {
-            // alert(data.processingStatus);
+                // alert(data.processingStatus);
 
-            var separator = "-";
+                var separator = "-";
 
-            var endCalculationDateTime = new Date(Date.parse(data.endCalculationDateTime));
-            // var dateString =
-            //     calculationDateTime.getUTCFullYear() + separator +
-            //     ("0" + (calculationDateTime.getUTCMonth() + 1)).slice(-2) + separator +
-            //     ("0" + calculationDateTime.getUTCDate()).slice(-2) + "_" +
-            //     ("0" + calculationDateTime.getUTCHours()).slice(-2) + separator +
-            //     ("0" + calculationDateTime.getUTCMinutes()).slice(-2) + separator +
-            //     ("0" + calculationDateTime.getUTCSeconds()).slice(-2);
+                var startCalculationDateTime = new Date(Date.parse(data.startCalculationDateTime));
+                // var dateString =
+                //     calculationDateTime.getUTCFullYear() + separator +
+                //     ("0" + (calculationDateTime.getUTCMonth() + 1)).slice(-2) + separator +
+                //     ("0" + calculationDateTime.getUTCDate()).slice(-2) + "_" +
+                //     ("0" + calculationDateTime.getUTCHours()).slice(-2) + separator +
+                //     ("0" + calculationDateTime.getUTCMinutes()).slice(-2) + separator +
+                //     ("0" + calculationDateTime.getUTCSeconds()).slice(-2);
 
-            var endDateString =
-                endCalculationDateTime.getFullYear() + separator +
-                ("0" + (endCalculationDateTime.getMonth() + 1)).slice(-2) + separator +
-                ("0" + endCalculationDateTime.getDate()).slice(-2) + "_" +
-                ("0" + endCalculationDateTime.getHours()).slice(-2) + separator +
-                ("0" + endCalculationDateTime.getMinutes()).slice(-2) + separator +
-                ("0" + endCalculationDateTime.getSeconds()).slice(-2);
+                var startDateString =
+                    startCalculationDateTime.getFullYear() + separator +
+                    ("0" + (startCalculationDateTime.getMonth() + 1)).slice(-2) + separator +
+                    ("0" + startCalculationDateTime.getDate()).slice(-2) + "_" +
+                    ("0" + startCalculationDateTime.getHours()).slice(-2) + separator +
+                    ("0" + startCalculationDateTime.getMinutes()).slice(-2) + separator +
+                    ("0" + startCalculationDateTime.getSeconds()).slice(-2);
 
-            console.log(endDateString);
+                console.log("start calculation time: " + startDateString);
+
+                var endCalculationDateTime = new Date(Date.parse(data.endCalculationDateTime));
+                // var dateString =
+                //     calculationDateTime.getUTCFullYear() + separator +
+                //     ("0" + (calculationDateTime.getUTCMonth() + 1)).slice(-2) + separator +
+                //     ("0" + calculationDateTime.getUTCDate()).slice(-2) + "_" +
+                //     ("0" + calculationDateTime.getUTCHours()).slice(-2) + separator +
+                //     ("0" + calculationDateTime.getUTCMinutes()).slice(-2) + separator +
+                //     ("0" + calculationDateTime.getUTCSeconds()).slice(-2);
+
+                var endDateString =
+                    endCalculationDateTime.getFullYear() + separator +
+                    ("0" + (endCalculationDateTime.getMonth() + 1)).slice(-2) + separator +
+                    ("0" + endCalculationDateTime.getDate()).slice(-2) + "_" +
+                    ("0" + endCalculationDateTime.getHours()).slice(-2) + separator +
+                    ("0" + endCalculationDateTime.getMinutes()).slice(-2) + separator +
+                    ("0" + endCalculationDateTime.getSeconds()).slice(-2);
+
+                console.log("end calculation time: " + endDateString);
+
+                var calculationDurationSeconds = (endCalculationDateTime.getTime() - startCalculationDateTime.getTime()) / 1000;
+
+                console.log("Calculation duration: " + calculationDurationSeconds + "s");
 
                 lastSwapCache = new LastSwapCache(endDateString, bodyImage, faceImage, data.swapImage, data.enchancedSwapImage);
 
@@ -119,6 +142,8 @@ function _handleSwapFace(bodyImage, faceImage) {
                 var enchancedSwapImageContainer = document.getElementById('enchanced-swap-image-container');
                 var enchancedSwapImageTag = document.getElementById('enchanced-swap-image');
 
+                var showCalculationTimeTag = document.getElementById('show-calculation-time');
+                
                 if (data.swapImage == null && (data.enchancedSwapImage == null)) {
                     resultContainer.style.display = 'none';
                     return;
@@ -126,6 +151,8 @@ function _handleSwapFace(bodyImage, faceImage) {
                     resultContainer.style.display = 'block';
 
                 if (data.swapImage != null) {
+                    showCalculationTimeTag.textContent = "Calculation duration: " + calculationDurationSeconds + "s"
+                    
                     swapImageContainer.style.display = 'block';
                     swapImageTag.src = "data:image/png;base64," + data.swapImage;
 

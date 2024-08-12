@@ -27,10 +27,11 @@ public class FaceProcessingController : ControllerBase
         {
             var targetFaceIndex = request.BodyImageFaceIndex;
 
+            var resultModel = new FaceSwapResultModel { StartCalculationDateTime = DateTime.Now };
+            
             var swapFaceRequest = new SwapFaceRequest(request.BodyImage, request.FaceImage, targetFaceIndex);
             var swapFaceResult = await _faceProcessingService.SwapFaceApi.SwapFace(swapFaceRequest);
 
-            var resultModel = new FaceSwapResultModel { StartCalculationDateTime = DateTime.Now };
             resultModel.ProcessingStatus = (swapFaceResult != null && swapFaceResult.Status.HasValue)
                 ? swapFaceResult.Status.Value
                 : FaceProcessingStatus.UnknownError;
