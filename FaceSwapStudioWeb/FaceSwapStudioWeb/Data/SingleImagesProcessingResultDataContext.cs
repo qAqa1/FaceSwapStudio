@@ -9,5 +9,19 @@ public class SingleImagesProcessingResultDataContext
     public SingleImagesProcessingResultDataContext()
     {
         ProcessingResultModels = new List<SingleImagesProcessingResultModel>();
+        
+        for (int i = 0; i < 6; i++)
+        {
+            ProcessingResultModels.Add(new SingleImagesProcessingResultModel
+            {
+                Id = i,
+                StartCalculationDateTime = DateTime.UtcNow,
+                EndCalculationDateTime = DateTime.UtcNow,
+                BodyImage = "BodyImage " + i,
+                FaceImage = "FaceImage " + i,
+                SwapImage = "SwapImage " + i,
+                EnchancedSwapImage = "EnchancedSwapImage " + i,
+            });
+        }
     }
 }

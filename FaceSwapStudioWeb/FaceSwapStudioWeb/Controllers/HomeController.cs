@@ -25,6 +25,12 @@ public class HomeController : Controller
         return View("SingleImagesProcessing");
         // return View();
     }
+    
+    public IActionResult SingleImagesProcessingResult()
+    {
+        return View("SingleImagesProcessingResult");
+        // return View();
+    }
 
     public IActionResult License()
     {
