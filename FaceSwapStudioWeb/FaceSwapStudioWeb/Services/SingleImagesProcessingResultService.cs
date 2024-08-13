@@ -15,13 +15,19 @@ public class SingleImagesProcessingResultService : ISingleImagesProcessingResult
     
     public SingleImagesProcessingResultModel Create(SingleImagesProcessingResultModel model)
     {
+        if (model.StartCalculationDateTime == DateTime.MinValue)
+            model.StartCalculationDateTime = DateTime.UtcNow;
+        
+        if (model.EndCalculationDateTime == DateTime.MinValue)
+            model.EndCalculationDateTime = DateTime.UtcNow;
+        
         var lastModel = _processingResultDataContext.ProcessingResultModels.LastOrDefault();
         var newId = lastModel is null ? 1 : lastModel.Id + 1;
 
         model.Id = newId;
-        // model.Date = DateTime.Now;
+        
         _processingResultDataContext.ProcessingResultModels.Add(model);
-
+        
         return model;
     }
 

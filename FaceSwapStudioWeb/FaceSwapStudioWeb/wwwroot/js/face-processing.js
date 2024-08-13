@@ -86,13 +86,6 @@ function _handleSwapFace(bodyImage, faceImage) {
                 var separator = "-";
 
                 var startCalculationDateTime = new Date(Date.parse(data.startCalculationDateTime));
-                // var dateString =
-                //     calculationDateTime.getUTCFullYear() + separator +
-                //     ("0" + (calculationDateTime.getUTCMonth() + 1)).slice(-2) + separator +
-                //     ("0" + calculationDateTime.getUTCDate()).slice(-2) + "_" +
-                //     ("0" + calculationDateTime.getUTCHours()).slice(-2) + separator +
-                //     ("0" + calculationDateTime.getUTCMinutes()).slice(-2) + separator +
-                //     ("0" + calculationDateTime.getUTCSeconds()).slice(-2);
 
                 var startDateString =
                     startCalculationDateTime.getFullYear() + separator +
@@ -105,13 +98,6 @@ function _handleSwapFace(bodyImage, faceImage) {
                 console.log("start calculation time: " + startDateString);
 
                 var endCalculationDateTime = new Date(Date.parse(data.endCalculationDateTime));
-                // var dateString =
-                //     calculationDateTime.getUTCFullYear() + separator +
-                //     ("0" + (calculationDateTime.getUTCMonth() + 1)).slice(-2) + separator +
-                //     ("0" + calculationDateTime.getUTCDate()).slice(-2) + "_" +
-                //     ("0" + calculationDateTime.getUTCHours()).slice(-2) + separator +
-                //     ("0" + calculationDateTime.getUTCMinutes()).slice(-2) + separator +
-                //     ("0" + calculationDateTime.getUTCSeconds()).slice(-2);
 
                 var endDateString =
                     endCalculationDateTime.getFullYear() + separator +

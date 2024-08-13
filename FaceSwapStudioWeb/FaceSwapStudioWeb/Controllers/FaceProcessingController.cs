@@ -27,7 +27,7 @@ public class FaceProcessingController : ControllerBase
         {
             var targetFaceIndex = request.BodyImageFaceIndex;
 
-            var resultModel = new FaceSwapResultModel { StartCalculationDateTime = DateTime.Now };
+            var resultModel = new FaceSwapResultModel { StartCalculationDateTime = DateTime.UtcNow };
             
             var swapFaceRequest = new SwapFaceRequest(request.BodyImage, request.FaceImage, targetFaceIndex);
             var swapFaceResult = await _faceProcessingService.SwapFaceApi.SwapFace(swapFaceRequest);
@@ -47,7 +47,7 @@ public class FaceProcessingController : ControllerBase
                 if (enchanceFacesResult is { Image: not null })
                     resultModel.EnchancedSwapImage = enchanceFacesResult.Image;
 
-                resultModel.EndCalculationDateTime = DateTime.Now;
+                resultModel.EndCalculationDateTime = DateTime.UtcNow;
                 return resultModel;
             }
         }
