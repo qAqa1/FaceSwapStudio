@@ -18,21 +18,21 @@ class SingleImagesProcessingResultApi {
         })
     }
     
-    GetAll() {
+    getAll() {
         return fetch(this.#apiUri, {
             method: 'GET',
             headers: this.#defaultHeaders,
         })
     }
 
-    Get(id) {
+    get(id) {
         return fetch(`${this.#apiUri}/${id}`, {
             method: 'GET',
             headers: this.#defaultHeaders,
         })
     }
 
-    Delete(id) {
+    delete(id) {
         return fetch(`${this.#apiUri}/${id}`, {
             method: 'DELETE',
             headers: this.#defaultHeaders,
@@ -42,7 +42,7 @@ class SingleImagesProcessingResultApi {
 
 // let processing = new SingleImagesProcessingResultApi();
 
-// function Test() {
+// function test() {
 //     let model = {
 //         startCalculationDateTime: (new Date()).toJSON(),
 //         // endCalculationDateTime: "2024-08-13T04:19:24.7371127+03:00",
@@ -109,4 +109,4 @@ class SingleImagesProcessingResultApi {
 //     // //     // .then(data => data.map(x => console.log(x)));
 // }
 //
-// Test()
+// test()
