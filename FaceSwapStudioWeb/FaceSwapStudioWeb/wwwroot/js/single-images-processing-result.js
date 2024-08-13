@@ -2,7 +2,7 @@ const singleImagesProcessingResultUri = 'api/SingleImagesProcessingResult';
 
 class SingleImagesProcessingResult {
 
-    #apiUrl = 'api/SingleImagesProcessingResult'
+    #apiUri = 'api/SingleImagesProcessingResult'
     #defaultHeaders = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -13,7 +13,7 @@ class SingleImagesProcessingResult {
     // }
     
     Add(model) {
-        return fetch(this.#apiUrl, {
+        return fetch(this.#apiUri, {
             method: 'POST',
             headers: this.#defaultHeaders,
             body: JSON.stringify(model)
@@ -21,8 +21,22 @@ class SingleImagesProcessingResult {
     }
     
     GetAll() {
-        return fetch(this.#apiUrl, {
+        return fetch(this.#apiUri, {
             method: 'GET',
+            headers: this.#defaultHeaders,
+        })
+    }
+
+    Get(id) {
+        return fetch(`${this.#apiUri}/${id}`, {
+            method: 'GET',
+            headers: this.#defaultHeaders,
+        })
+    }
+
+    Delete(id) {
+        return fetch(`${this.#apiUri}/${id}`, {
+            method: 'DELETE',
             headers: this.#defaultHeaders,
         })
     }
@@ -57,7 +71,16 @@ function Test() {
                 .then(response => {
                     processing.GetAll()
                         .then(response => response.json())
-                        .then(data => data.map(x => console.log(x)));
+                        .then(data => data.map(x => console.log(x)))
+                    
+                    processing.Get(1)
+                        .then(response => response.json())
+                        // .then(data => console.log(JSON.stringify(data)))
+                        .then(data => console.log(data))
+
+                    processing.Delete(1)
+                        // .then(response => response.json())
+                        // .then(data => console.log(JSON.stringify(data)))
                 })
         })
     
