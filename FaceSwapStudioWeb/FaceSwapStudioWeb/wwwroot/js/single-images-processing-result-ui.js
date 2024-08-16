@@ -67,7 +67,18 @@ class SingleImagesProcessingResultUiController {
             let rowRoot = $("<tr>");
 
             $("<th>", {"class": tableCellClass}).html(`${item.id}`).appendTo(rowRoot)
-            $("<td>", {"class": tableCellClass}).html(`${item.endCalculationDateTime}`).appendTo(rowRoot)
+
+            let separator = "-";
+            let endCalculationDateTime = new Date(Date.parse(item.endCalculationDateTime));
+            let endDateString =
+                endCalculationDateTime.getFullYear() + separator +
+                ("0" + (endCalculationDateTime.getMonth() + 1)).slice(-2) + separator +
+                ("0" + endCalculationDateTime.getDate()).slice(-2) + " " +
+                ("0" + endCalculationDateTime.getHours()).slice(-2) + separator +
+                ("0" + endCalculationDateTime.getMinutes()).slice(-2) + separator +
+                ("0" + endCalculationDateTime.getSeconds()).slice(-2);
+            
+            $("<td>", {"class": tableCellClass}).html(endDateString).appendTo(rowRoot)
             // $("<td>", {"class": tableCellClass}).append($("<img>", {'src': 'https://avatars.mds.yandex.net/i?id=766637e7fecd215c2916b5d4741bd5f4_l-5282144-images-thumbs&n=27&h=480&w=480'})).appendTo(rowRoot)
 
             if (item.faceImage != null && item.faceImage !== '') {
