@@ -28,6 +28,9 @@ public class SingleImagesProcessingResultService : ISingleImagesProcessingResult
         
         _processingResultDataContext.ProcessingResultModels.Add(model);
         
+        SingleImagesProcessingResultModelSaveProxy saveProxy = new(model);
+        saveProxy.Create();
+
         return model;
     }
 
