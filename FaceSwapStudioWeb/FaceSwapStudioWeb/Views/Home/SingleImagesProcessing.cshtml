@@ -88,7 +88,7 @@
         <div class="container">
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                
+
                 <div id="swap-image-container" style="display: none;" class="col">
                     <div class="card shadow-sm">
                         <img id="swap-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
@@ -105,7 +105,7 @@
                 </div>
 
 
-                <div id="enchanced-swap-image-container" style="display: none;" class="col">
+                <div id="enchanced-swap-image-container" style="display: none" class="col">
                     <div class="card shadow-sm">
                         @* <img class="bd-placeholder-img card-img-top" width="100%" height="100%" src="data:image/png;base64,@(Model.CstomConvert.FileToBase64(Model.EnchancedSwapImage))"/> *@
                         <img id="enchanced-swap-image" class="bd-placeholder-img card-img-top" width="100%" height="100%"/>
@@ -124,14 +124,21 @@
             </div>
         </div>
     </div>
-    <small id = "show-calculation-time" class="text-muted">Calculation time: __</small>
-
-    <hr class="my-4">
     
+    <div>
+        <small id="show-calculation-time" class="text-muted">Calculation time: __</small>
+    </div>
+
+    <div>
+        <button id="save-result-button" style="display: none" class="btn btn-primary my-2" onclick="save()">Save</button>
+    </div>
+    
+    <hr class="my-4">
+
     <h1 class="fw-light">Download util</h1>
 
     <h4 class="mb-3">Selected files</h4>
-    
+
     <div class="form-check">
         <input id="download-body-image" type="checkbox" class="form-check-input" checked>
         <label class="form-check-label">Body image</label>
@@ -153,5 +160,4 @@
     </div>
 
     <button class="btn btn-primary my-2" onclick="downloadSelected();">Download selected</button>
-
 </div>

@@ -49,8 +49,11 @@ function swapFace() {
 }
 
 class LastSwapCache {
-    constructor(filenamePrefix, bodyImage, faceImage, swapImage, enchancedSwapImage) {
+    constructor(filenamePrefix, startCalculationDateTime, endCalculationDateTime, bodyImage, faceImage, swapImage, enchancedSwapImage) {
         this.filenamePrefix = filenamePrefix;
+
+        this.startCalculationDateTime = startCalculationDateTime;
+        this.endCalculationDateTime = endCalculationDateTime;
 
         this.bodyImage = bodyImage;
         this.faceImage = faceImage;
@@ -59,7 +62,7 @@ class LastSwapCache {
     }
 }
 
-var lastSwapCache = new LastSwapCache("", null, null, null, null);
+var lastSwapCache = new LastSwapCache("", new Date(), new Date().toJSON(), null, null, null, null);
 
 function _handleSwapFace(bodyImage, faceImage) {
     const request = {
@@ -113,7 +116,7 @@ function _handleSwapFace(bodyImage, faceImage) {
 
                 console.log("Calculation duration: " + calculationDurationSeconds + "s");
 
-                lastSwapCache = new LastSwapCache(endDateString, bodyImage, faceImage, data.swapImage, data.enchancedSwapImage);
+                lastSwapCache = new LastSwapCache(endDateString, startCalculationDateTime, endCalculationDateTime, bodyImage, faceImage, data.swapImage, data.enchancedSwapImage);
 
                 var resultContainer = document.getElementById('result-container');
 
@@ -129,7 +132,9 @@ function _handleSwapFace(bodyImage, faceImage) {
                 var enchancedSwapImageTag = document.getElementById('enchanced-swap-image');
 
                 var showCalculationTimeTag = document.getElementById('show-calculation-time');
-                
+
+                var saveResultButton = document.getElementById('save-result-button');
+
                 if (data.swapImage == null && (data.enchancedSwapImage == null)) {
                     resultContainer.style.display = 'none';
                     return;
@@ -138,7 +143,7 @@ function _handleSwapFace(bodyImage, faceImage) {
 
                 if (data.swapImage != null) {
                     showCalculationTimeTag.textContent = "Calculation duration: " + calculationDurationSeconds + "s"
-                    
+
                     swapImageContainer.style.display = 'block';
                     swapImageTag.src = "data:image/png;base64," + data.swapImage;
 
@@ -151,16 +156,41 @@ function _handleSwapFace(bodyImage, faceImage) {
 
                 if (data.enchancedSwapImage != null) {
                     enchancedSwapImageContainer.style.display = 'block';
+                    saveResultButton.style.display = 'block';
+                    
                     enchancedSwapImageTag.src = "data:image/png;base64," + data.enchancedSwapImage;
-
                     enchancedSwapImageTag.style.display = 'block';
-                } else
+                } else {
+                    enchancedSwapImageContainer.style.display = 'none';
+                    saveResultButton.style.display = 'none';
+                    
+                    enchancedSwapImageTag.src = "";
                     enchancedSwapImageTag.style.display = 'none';
+                }
 
                 if (data.swapImage != null)
                     window.scrollTo(0, document.body.scrollHeight);
             }
         );
+}
+
+function save() {
+    let model = {
+        startCalculationDateTime: lastSwapCache.startCalculationDateTime.toJSON(),
+        endCalculationDateTime: lastSwapCache.endCalculationDateTime.toJSON(),
+        bodyImage: lastSwapCache.bodyImage,
+        faceImage: lastSwapCache.faceImage,
+        swapImage: lastSwapCache.swapImage,
+        enchancedSwapImage: lastSwapCache.enchancedSwapImage
+    }
+
+    SingleImagesProcessingResultApi.add(model)
+        .then(response => response.json())
+        .then((item) => {
+            console.log(item)
+            alert("Face swap result saved")
+        })
+        .catch(error => console.error('Unable to add item.', error));
 }
 
 function downloadBase64Image(filename, imageData) {

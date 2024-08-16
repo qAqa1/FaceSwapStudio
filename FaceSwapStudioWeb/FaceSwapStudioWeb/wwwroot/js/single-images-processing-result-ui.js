@@ -1,13 +1,10 @@
 class SingleImagesProcessingResultUiController {
-    static #processing = new SingleImagesProcessingResultApi();
-
-    static #getItemsContainer()
-    {
+    static #getItemsContainer() {
         return $('#processing-result-list').find('tbody')
     }
-    
+
     static getAll() {
-        SingleImagesProcessingResultUiController.#processing.getAll()
+        SingleImagesProcessingResultApi.getAll()
             .then(response => response.json())
             .then(data => SingleImagesProcessingResultUiController.#displayItems(data))
             .catch(error => console.error('Unable to get items.', error));
@@ -30,8 +27,8 @@ class SingleImagesProcessingResultUiController {
         //             )
         //         )))
         // })
-        
-        let itemsContainer = SingleImagesProcessingResultUiController.#getItemsContainer() 
+
+        let itemsContainer = SingleImagesProcessingResultUiController.#getItemsContainer()
         itemsContainer.html('')
 
         dataItems.forEach(item => {
@@ -71,18 +68,46 @@ class SingleImagesProcessingResultUiController {
 
             $("<th>", {"class": tableCellClass}).html(`${item.id}`).appendTo(rowRoot)
             $("<td>", {"class": tableCellClass}).html(`${item.endCalculationDateTime}`).appendTo(rowRoot)
-            $("<td>", {"class": tableCellClass}).append($("<img>", {'src': 'https://avatars.mds.yandex.net/i?id=766637e7fecd215c2916b5d4741bd5f4_l-5282144-images-thumbs&n=27&h=480&w=480'})).appendTo(rowRoot)
+            // $("<td>", {"class": tableCellClass}).append($("<img>", {'src': 'https://avatars.mds.yandex.net/i?id=766637e7fecd215c2916b5d4741bd5f4_l-5282144-images-thumbs&n=27&h=480&w=480'})).appendTo(rowRoot)
 
-            let detailsDiv = $("<div>", {}).append($("<button>", {"class": 'btn btn-primary my-2'}).html('details').click(function () {
-                alert(`${item.id}`)
-            }))
+            if (item.faceImage != null && item.faceImage !== '') {
+                $("<td>", {"class": tableCellClass}).append($("<img>", {
+                    'width': 300,
+                    'src': "data:image/png;base64," + item.faceImage
+                })).appendTo(rowRoot)
+            } else
+                $("<th>", {"class": tableCellClass}).appendTo(rowRoot)
+            
+            if (item.bodyImage != null && item.bodyImage !== '') {
+                $("<td>", {"class": tableCellClass}).append($("<img>", {
+                    'width': 300,
+                    'src': "data:image/png;base64," + item.bodyImage
+                })).appendTo(rowRoot)
+            } else
+                $("<th>", {"class": tableCellClass}).appendTo(rowRoot)
+            
+            if (item.enchancedSwapImage != null && item.enchancedSwapImage !== '') {
+                $("<td>", {"class": tableCellClass}).append($("<img>", {
+                    'width': 600,
+                    'src': "data:image/png;base64," + item.enchancedSwapImage
+                })).appendTo(rowRoot)
+            } else
+                $("<th>", {"class": tableCellClass}).appendTo(rowRoot)
+
+            // let detailsDiv = $("<div>", {}).append($("<button>", {"class": 'btn btn-primary my-2'}).html('details').click(function () {
+            //     alert(`${item.id}`)
+            // }))
 
             let deleteDiv = $("<div>", {}).append($("<button>", {"class": 'btn btn-secondary my-2'}).html('delete').click(function () {
                 // alert(`${item.id}`)
-                SingleImagesProcessingResultUiController.delete(item.id)
+
+                if (confirm('Are you sure you want to delete this swap result?'))
+                    SingleImagesProcessingResultUiController.delete(item.id)
+
+                // SingleImagesProcessingResultUiController.delete(item.id)
             }))
 
-            $("<td>", {"class": tableCellClass}).append(detailsDiv).append(deleteDiv).appendTo(rowRoot)
+            $("<td>", {"class": tableCellClass})./*append(detailsDiv).*/append(deleteDiv).appendTo(rowRoot)
 
             itemsContainer.append(rowRoot)
         })
@@ -90,7 +115,7 @@ class SingleImagesProcessingResultUiController {
 
     static delete(id) {
         SingleImagesProcessingResultUiController.#getItemsContainer().html("")
-        SingleImagesProcessingResultUiController.#processing.delete(id).then(() => SingleImagesProcessingResultUiController.getAll())
+        SingleImagesProcessingResultApi.delete(id).then(() => SingleImagesProcessingResultUiController.getAll())
     }
 }
 

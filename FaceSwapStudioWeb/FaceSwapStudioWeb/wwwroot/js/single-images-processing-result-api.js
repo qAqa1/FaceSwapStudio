@@ -1,7 +1,7 @@
 class SingleImagesProcessingResultApi {
-    #apiUri = location.protocol + '//' + location.host + '/api/SingleImagesProcessingResult'
-    
-    #defaultHeaders = {
+    static #apiUri = location.protocol + '//' + location.host + '/api/SingleImagesProcessingResult'
+
+    static #defaultHeaders = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
@@ -9,31 +9,31 @@ class SingleImagesProcessingResultApi {
     // constructor() {
     //     this.apiUrl = 'api/SingleImagesProcessingResult'
     // }
-    
-    Add(model) {
-        return fetch(this.#apiUri, {
+
+    static add(model) {
+        return fetch(SingleImagesProcessingResultApi.#apiUri, {
             method: 'POST',
             headers: this.#defaultHeaders,
             body: JSON.stringify(model)
         })
     }
-    
-    getAll() {
-        return fetch(this.#apiUri, {
+
+    static getAll() {
+        return fetch(SingleImagesProcessingResultApi.#apiUri, {
             method: 'GET',
             headers: this.#defaultHeaders,
         })
     }
 
-    get(id) {
-        return fetch(`${this.#apiUri}/${id}`, {
+    static get(id) {
+        return fetch(`${SingleImagesProcessingResultApi.#apiUri}/${id}`, {
             method: 'GET',
             headers: this.#defaultHeaders,
         })
     }
 
-    delete(id) {
-        return fetch(`${this.#apiUri}/${id}`, {
+    static delete(id) {
+        return fetch(`${SingleImagesProcessingResultApi.#apiUri}/${id}`, {
             method: 'DELETE',
             headers: this.#defaultHeaders,
         })
