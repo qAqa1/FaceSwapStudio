@@ -4,13 +4,13 @@ using FaceSwapStudioWeb.Services.Interfaces;
 
 namespace FaceSwapStudioWeb.Services;
 
-public class SingleImagesProcessingResultService : ISingleImagesProcessingResultService
+public class SingleImagesProcessingResultMoqService : ISingleImagesProcessingResultService
 {
-    private SingleImagesProcessingResultDataContext _processingResultDataContext;
+    private SingleImagesProcessingResultMoqContext _context;
     
-    public SingleImagesProcessingResultService(SingleImagesProcessingResultDataContext processingResultDataContext)
+    public SingleImagesProcessingResultMoqService(SingleImagesProcessingResultMoqContext context)
     {
-        _processingResultDataContext = processingResultDataContext;
+        _context = context;
     }
     
     public SingleImagesProcessingResultModel Create(SingleImagesProcessingResultModel model)
@@ -21,19 +21,19 @@ public class SingleImagesProcessingResultService : ISingleImagesProcessingResult
         if (model.EndCalculationDateTime == DateTime.MinValue)
             model.EndCalculationDateTime = DateTime.UtcNow;
         
-        var lastModel = _processingResultDataContext.ProcessingResultModels.LastOrDefault();
+        var lastModel = _context.ProcessingResultModels.LastOrDefault();
         var newId = lastModel is null ? 1 : lastModel.Id + 1;
 
         model.Id = newId;
         
-        _processingResultDataContext.ProcessingResultModels.Add(model);
+        _context.ProcessingResultModels.Add(model);
         
         return model;
     }
 
     public SingleImagesProcessingResultModel? Update(SingleImagesProcessingResultModel model)
     {
-        var modelToUpdate = _processingResultDataContext.ProcessingResultModels.FirstOrDefault(x => x.Id == model.Id);
+        var modelToUpdate = _context.ProcessingResultModels.FirstOrDefault(x => x.Id == model.Id);
 
         // if (modelToUpdate != null)
         // {
@@ -46,17 +46,17 @@ public class SingleImagesProcessingResultService : ISingleImagesProcessingResult
 
     public SingleImagesProcessingResultModel Get(long id)
     {
-        return _processingResultDataContext.ProcessingResultModels.FirstOrDefault(x => x.Id == id);
+        return _context.ProcessingResultModels.FirstOrDefault(x => x.Id == id);
     }
     
-    public List<SingleImagesProcessingResultModel> Get()
+    public IEnumerable<SingleImagesProcessingResultModel> Get()
     {
-        return _processingResultDataContext.ProcessingResultModels;
+        return _context.ProcessingResultModels;
     }
 
     public bool Delete(long id)
     {
-        var modelToDelete = _processingResultDataContext.ProcessingResultModels.FirstOrDefault(x => x.Id == id);
-        return _processingResultDataContext.ProcessingResultModels.Remove(modelToDelete);
+        var modelToDelete = _context.ProcessingResultModels.FirstOrDefault(x => x.Id == id);
+        return _context.ProcessingResultModels.Remove(modelToDelete);
     }
 }

@@ -71,7 +71,7 @@ The first launch may be a long time because insightface will load the necessary 
 ## FaceSwapStudioWeb is web ui for face swap.
 Open it in your .NET ide.
 
-### Setup *FaceSwapStudioWeb/FaceSwapStudioWeb/ExternalApiSettings.json*:
+### Setup *FaceSwapStudioWeb/FaceSwapStudioWeb/CustomSettings/ExternalApiSettings.json*:
 
 Set url for *ApiUrl:FaceSwapApi* if you run *faceSwapApi/face_swap_api.py* on other computer or leave it by default 127.0.0.1 if you run api on same computer.
 Set url for *ApiUrl:StableDiffusionApiUrl* if you run stable diffusion webui on other computer or leave it by default 127.0.0.1 if you run this on same computer.
@@ -97,6 +97,49 @@ share example:
   }
 }
 ```
+
+### Setup *FaceSwapStudioWeb/FaceSwapStudioWeb/CustomSettings/DatabaseSettings.json*:
+
+Leave by default if you want to use default sql lite database. Or you can change default SqlLite ConnectionType to SqlServer and setup ur connection string to your sql server instance.
+<br/>
+<br/>
+Sql Lite example:
+
+```
+{
+  "UseMoq": false,
+  "ConnectionType": "SqlLite",
+  "ConnectionStrings": {
+    "SqlServerConnection": "Server=127.0.0.1,1433;User Id=SA;Password=Alex228_;Initial Catalog=FaceSwap;TrustServerCertificate=true",
+    "SqlLiteConnection": "DataSource=face_swap.db;Cache=Shared"
+  }
+}
+```
+
+Sql Server docker 
+
+```
+docker pull mcr.microsoft.com/azure-sql-edge
+sudo docker run --cap-add SYS_PTRACE -e 'ACCEPT_EULA=1' -e 'MSSQL_SA_PASSWORD=Alex228_' -p 1433:1433 --name sqledge -d mcr.microsoft.com/azure-sql-edge
+
+```
+
+example:
+```
+{
+  "UseMoq": false,
+  "ConnectionType": "SqlServer",
+  "ConnectionStrings": {
+    "SqlServerConnection": "Server=127.0.0.1,1433;User Id=SA;Password=Alex228_;Initial Catalog=FaceSwap;TrustServerCertificate=true",
+    "SqlLiteConnection": "DataSource=face_swap.db;Cache=Shared"
+  }
+}
+```
+
+After setup this run Entity framework:
+* Add migration
+* Update database
+
 ### Setup *FaceSwapStudioWeb/FaceSwapStudioWeb/Properties/launchSettings.json*:
 Replace localhost in *profiles* section to your computer local network v4 url if you want to share web ui through your local network or leave it by default localhost if you don't want to do it.
 <br/>

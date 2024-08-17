@@ -398,3 +398,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 /.idea/
+
+#Migration
+/FaceSwapStudioWeb/face_swap.db
+/FaceSwapStudioWeb/Migrations

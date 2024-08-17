@@ -98,7 +98,7 @@ function _handleSwapFace(bodyImage, faceImage) {
                     ("0" + startCalculationDateTime.getMinutes()).slice(-2) + separator +
                     ("0" + startCalculationDateTime.getSeconds()).slice(-2);
 
-                console.log("start calculation time: " + startDateString);
+                console.log("Start calculation time: " + startDateString);
 
                 var endCalculationDateTime = new Date(Date.parse(data.endCalculationDateTime));
 
@@ -110,7 +110,7 @@ function _handleSwapFace(bodyImage, faceImage) {
                     ("0" + endCalculationDateTime.getMinutes()).slice(-2) + separator +
                     ("0" + endCalculationDateTime.getSeconds()).slice(-2);
 
-                console.log("end calculation time: " + endDateString);
+                console.log("End calculation time: " + endDateString);
 
                 var calculationDurationSeconds = (endCalculationDateTime.getTime() - startCalculationDateTime.getTime()) / 1000;
 

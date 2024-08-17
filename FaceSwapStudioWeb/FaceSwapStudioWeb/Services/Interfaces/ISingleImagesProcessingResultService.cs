@@ -10,7 +10,7 @@ public interface ISingleImagesProcessingResultService
     
     SingleImagesProcessingResultModel Get(long id);
     
-    List<SingleImagesProcessingResultModel> Get();
+    IEnumerable<SingleImagesProcessingResultModel> Get();
     
     bool Delete(long id);
 }

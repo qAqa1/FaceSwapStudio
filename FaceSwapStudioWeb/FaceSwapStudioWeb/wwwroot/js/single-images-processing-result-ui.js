@@ -3,14 +3,18 @@ class SingleImagesProcessingResultUiController {
         return $('#processing-result-list').find('tbody')
     }
 
-    static getAll() {
+    static getAll(scrollToEnd = true) {
         SingleImagesProcessingResultApi.getAll()
             .then(response => response.json())
-            .then(data => SingleImagesProcessingResultUiController.#displayItems(data))
+            .then(data => {
+                SingleImagesProcessingResultUiController.#displayItems(data, scrollToEnd)
+                // $.when(SingleImagesProcessingResultUiController.#displayItems(data))
+                //     .then(window.scrollTo(0, document.body.scrollHeight))
+            })
             .catch(error => console.error('Unable to get items.', error));
     }
 
-    static #displayItems(dataItems) {
+    static #displayItems(dataItems, scrollToEnd) {
         // dataItems.forEach(item => {
         //     // console.log(item)
         //     $('#processing-result-list').find('tbody').append(React.renderToString(
@@ -77,7 +81,7 @@ class SingleImagesProcessingResultUiController {
                 ("0" + endCalculationDateTime.getHours()).slice(-2) + separator +
                 ("0" + endCalculationDateTime.getMinutes()).slice(-2) + separator +
                 ("0" + endCalculationDateTime.getSeconds()).slice(-2);
-            
+
             $("<td>", {"class": tableCellClass}).html(endDateString).appendTo(rowRoot)
             // $("<td>", {"class": tableCellClass}).append($("<img>", {'src': 'https://avatars.mds.yandex.net/i?id=766637e7fecd215c2916b5d4741bd5f4_l-5282144-images-thumbs&n=27&h=480&w=480'})).appendTo(rowRoot)
 
@@ -88,7 +92,7 @@ class SingleImagesProcessingResultUiController {
                 })).appendTo(rowRoot)
             } else
                 $("<th>", {"class": tableCellClass}).appendTo(rowRoot)
-            
+
             if (item.bodyImage != null && item.bodyImage !== '') {
                 $("<td>", {"class": tableCellClass}).append($("<img>", {
                     'width': 300,
@@ -96,7 +100,7 @@ class SingleImagesProcessingResultUiController {
                 })).appendTo(rowRoot)
             } else
                 $("<th>", {"class": tableCellClass}).appendTo(rowRoot)
-            
+
             if (item.enchancedSwapImage != null && item.enchancedSwapImage !== '') {
                 $("<td>", {"class": tableCellClass}).append($("<img>", {
                     'width': 600,
@@ -120,7 +124,10 @@ class SingleImagesProcessingResultUiController {
 
             $("<td>", {"class": tableCellClass})./*append(detailsDiv).*/append(deleteDiv).appendTo(rowRoot)
 
-            itemsContainer.append(rowRoot)
+            itemsContainer.append(rowRoot).ready(function () {
+                if (scrollToEnd)
+                    window.scrollTo(0, document.body.scrollHeight)
+            })
         })
     }
 
