@@ -3,18 +3,12 @@
 }
 <h1>@ViewData["Title"]</h1>
 
+<script src="~/js/single-images-processing-result-ui.js" asp-append-version="true"></script>
+
 <div id = "processing-result-list" class="container">
     <table class="table">
         <thead>
         <tr>
-            @* <th scope="col">#</th> *@
-            @* <th scope="col">startCalculationDateTime</th> *@
-            @* <th scope="col">endCalculationDateTime</th> *@
-            @* <th scope="col">bodyImage</th> *@
-            @* <th scope="col">faceImage</th> *@
-            @* <th scope="col">swapImage</th> *@
-            @* <th scope="col">enchancedSwapImage</th> *@
-            
             <th scope="col">#</th>
             <th scope="col">endCalculationDateTime</th>
             <th scope="col">faceImage</th>
@@ -29,5 +23,4 @@
     </table>
 </div>
 
-<script src="~/js/single-images-processing-result-ui.js" asp-append-version="true"></script>
 <button class="btn btn-primary my-2" onclick="SingleImagesProcessingResultUiController.getAll()">Update</button>

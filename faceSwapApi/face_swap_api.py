@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, Depends, Request, HTTPException
+from fastapi import FastAPI, Request
 import core.face_swap_core as face_swap
 from core import converter
 

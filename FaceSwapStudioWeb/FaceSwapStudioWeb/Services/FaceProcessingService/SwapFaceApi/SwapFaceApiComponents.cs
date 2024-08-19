@@ -25,7 +25,6 @@ public record class FaceRectangle(
     int Y2 = 0);
 
 public record class DetectFacesResult(
-    // string? Status = null,
     FaceProcessingStatus? Status = null,
     List<FaceRectangle>? DetectedFacesRectangles = null);
     
@@ -35,6 +34,5 @@ public record class SwapFaceRequest(
     int TargetFaceIndex);
     
 public record class SwapFaceResult(
-    // string? Status = null,
     FaceProcessingStatus? Status = null,
     string? Image = null);

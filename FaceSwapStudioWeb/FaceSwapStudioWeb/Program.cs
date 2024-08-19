@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var customSettingsDir = "CustomSettings" + Path.DirectorySeparatorChar;
@@ -25,7 +24,6 @@ var useMoq = databaseConfig.GetValue<bool>("UseMoq");
 
 var connectionType = databaseConfig.GetValue<string>("ConnectionType") ??
                      throw new InvalidOperationException("Connection type not found");
-;
 
 var connectionString = databaseConfig.GetValue<string>($"ConnectionStrings:{connectionType}Connection") ??
                        throw new InvalidOperationException("Connection string not found");
@@ -55,8 +53,6 @@ else
 
 
 var app = builder.Build();
-
-// var srv2 = app.Services.GetService<FaceProcessing>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
