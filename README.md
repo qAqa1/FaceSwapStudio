@@ -116,6 +116,25 @@ Sql Lite example:
 }
 ```
 
+PostgreSQL docker 
+
+```
+docker pull postgres
+docker run --name postgres_edge -e POSTGRES_PASSWORD=Alex228 -p 5432:5432 -d postgres
+```
+
+example:
+```
+{
+  "UseMoq": false,
+  "ConnectionType": "SqlPostgres",
+  "ConnectionStrings": {
+    "SqlServerConnection": "Server=127.0.0.1,1433;User Id=SA;Password=Alex228_;Initial Catalog=FaceSwap;TrustServerCertificate=true",
+    "SqlPostgresConnection": "Server=127.0.0.1;User Id=postgres;Password=Alex228;Port=5432;Database=FaceSwap;",
+    "SqlLiteConnection": "DataSource=face_swap.db;Cache=Shared"
+  }
+}
+```
 Sql Server docker 
 
 ```

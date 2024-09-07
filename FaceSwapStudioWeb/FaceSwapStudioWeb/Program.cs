@@ -45,6 +45,11 @@ else
         builder.Services.AddDbContext<SingleImagesProcessingResultDbContext>(options =>
             options.UseSqlServer(connectionString));
     }
+    else if (connectionType == "SqlPostgres")
+    {
+        builder.Services.AddDbContext<SingleImagesProcessingResultDbContext>(options =>
+            options.UseNpgsql(connectionString));
+    }
     else
         throw new InvalidOperationException("Unexpected connection type");
     

@@ -129,7 +129,9 @@ function _handleSwapFace(bodyImage, faceImage) {
             }
 
             if (data.swapImage != null)
-                window.scrollTo(0, document.body.scrollHeight)
+                enchancedSwapImageTag.scrollIntoView({
+                    behavior: 'smooth'
+                });
         }
         )
 }
