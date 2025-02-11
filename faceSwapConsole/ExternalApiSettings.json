@@ -1,0 +1,6 @@
+{
+  "ApiUrl": {
+    "FaceSwapApi": "http://127.0.0.1:8000",
+    "StableDiffusionApi": "http://127.0.0.1:7860"
+  }
+}
